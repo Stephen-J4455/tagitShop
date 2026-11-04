@@ -1,0 +1,46 @@
+<Window x:Class="NewOrderDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="New Order"
+        Width="420" Height="560"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource WindowBackground}"
+        ResizeMode="CanResize">
+
+    <Border Background="{StaticResource TextWhite}" CornerRadius="12" BorderBrush="{StaticResource TagitBorder}" BorderThickness="1" Padding="32" Margin="20">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Create New Order" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextDark}" HorizontalAlignment="Center" Margin="0,0,0,24"/>
+
+                <TextBlock Text="Customer Name" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,6"/>
+                <TextBox x:Name="TxtCustomerName" Height="44" Style="{StaticResource LoginInput}" Tag="e.g. John Doe" Margin="0,0,0,16"/>
+
+                <TextBlock Text="Total Amount (GHC)" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,6"/>
+                <TextBox x:Name="TxtTotalAmount" Height="44" Style="{StaticResource LoginInput}" Tag="0.00" Margin="0,0,0,16"/>
+
+                <TextBlock Text="Number of Items" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,6"/>
+                <TextBox x:Name="TxtItemCount" Height="44" Style="{StaticResource LoginInput}" Tag="1" Margin="0,0,0,16"/>
+
+                <TextBlock Text="Payment Status" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,6"/>
+                <ComboBox x:Name="CmbPaymentStatus" Height="44" Margin="0,0,0,24"
+                          Foreground="{StaticResource TextDark}"
+                          BorderBrush="{StaticResource TagitBorder}"
+                          Background="{StaticResource TextWhite}">
+                    <ComboBoxItem Content="Paid"/>
+                    <ComboBoxItem Content="Partial"/>
+                    <ComboBoxItem Content="Unpaid"/>
+                </ComboBox>
+
+                <CheckBox x:Name="ChkRecordDebt" Content="Record as customer debt (unpaid balance)" FontSize="13" Foreground="{StaticResource TextDark}" Margin="0,0,0,16"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                    <Button Content="Cancel" Style="{StaticResource OutlineButton}" Height="44" Width="100" Click="BtnCancel_Click" Margin="0,0,12,0"/>
+                    <Button Content="Create Order" Style="{StaticResource PrimaryButton}" Height="44" Width="120" Click="BtnCreate_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</Window>

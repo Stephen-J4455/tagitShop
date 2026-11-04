@@ -1,0 +1,31 @@
+<Window x:Class="DebtDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Customer debt" Width="440" Height="470"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{StaticResource WindowBackground}">
+    <Border Background="{StaticResource TextWhite}" BorderBrush="{StaticResource TagitBorder}" BorderThickness="1" Padding="26" Margin="18">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock x:Name="TxtTitle" Text="Record debt" FontFamily="Georgia" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
+                    <TextBlock x:Name="TxtDescription" Text="Add an outstanding customer balance." FontSize="13" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap" Margin="0,6,0,20"/>
+                    <TextBlock Text="CUSTOMER" Style="{StaticResource FilterLabel}"/>
+                    <TextBox x:Name="TxtCustomer" Style="{StaticResource LoginInput}" Margin="0,0,0,15"/>
+                    <TextBlock x:Name="TxtAmountLabel" Text="AMOUNT OWED (GHC)" Style="{StaticResource FilterLabel}"/>
+                    <TextBox x:Name="TxtAmount" Style="{StaticResource LoginInput}" Margin="0,0,0,15"/>
+                    <TextBlock Text="NOTE" Style="{StaticResource FilterLabel}"/>
+                    <TextBox x:Name="TxtNote" Height="70" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" Margin="0,0,0,20"/>
+                </StackPanel>
+            </ScrollViewer>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+                <Button Content="Cancel" Style="{StaticResource OutlineButton}" Width="92" Height="40" Click="BtnCancel_Click" Margin="0,0,9,0"/>
+                <Button x:Name="BtnSave" Content="Record debt" Style="{StaticResource PrimaryButton}" Width="130" Height="40" Click="BtnSave_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

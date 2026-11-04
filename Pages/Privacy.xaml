@@ -1,0 +1,50 @@
+﻿<Page x:Class="Privacy"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:tagitShop"
+      mc:Ignorable="d"
+      Background="{StaticResource WindowBackground}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="32,32,32,32">
+
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Privacy" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
+                    <TextBlock Text="Privacy settings and data protection" FontSize="14" Foreground="{StaticResource TextMuted}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Text="Data &amp; Privacy" Style="{StaticResource SectionHeader}" Margin="0,0,0,12"/>
+            <ItemsControl x:Name="PrivacyGrid">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource TextWhite}" CornerRadius="8" BorderBrush="{StaticResource TagitBorder}" BorderThickness="1" Padding="20" Margin="0,0,0,12">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="32" Height="32" Fill="{StaticResource TagitSurface}" Margin="0,0,16,0"/>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding title}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextDark}"/>
+                                    <TextBlock Text="{Binding description}" FontSize="12" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock x:Name="TxtStatus" Text="Ready" FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,16,0,0"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

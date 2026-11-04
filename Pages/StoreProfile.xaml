@@ -1,0 +1,24 @@
+<Page x:Class="StoreProfile"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{StaticResource WindowBackground}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="30,28,30,30">
+            <TextBlock Text="Store settings" FontFamily="Georgia" FontSize="26" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
+            <TextBlock Text="Manage the name and public contact details for this store." FontSize="13" Foreground="{StaticResource TextMuted}" Margin="0,5,0,20"/>
+            <Border Background="{StaticResource TextWhite}" BorderBrush="{StaticResource TagitBorder}" BorderThickness="1" Padding="24" MaxWidth="720" HorizontalAlignment="Left">
+                <StackPanel>
+                    <TextBlock Text="STORE IDENTITY" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TagitAccent}" Margin="0,0,0,18"/>
+                    <TextBlock Text="STORE NAME" Style="{StaticResource FilterLabel}"/>
+                    <TextBox x:Name="TxtStoreName" Style="{StaticResource LoginInput}" Margin="0,0,0,16"/>
+                    <TextBlock Text="CONTACT EMAIL" Style="{StaticResource FilterLabel}"/>
+                    <TextBox x:Name="TxtStoreEmail" Style="{StaticResource LoginInput}" Margin="0,0,0,16"/>
+                    <TextBlock Text="STORE DESCRIPTION" Style="{StaticResource FilterLabel}"/>
+                    <TextBox x:Name="TxtDescription" Height="120" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" Margin="0,0,0,18"/>
+                    <Button Content="Save store profile" Style="{StaticResource PrimaryButton}" Height="42" HorizontalAlignment="Left" Padding="18,8" Click="BtnSave_Click"/>
+                    <TextBlock x:Name="TxtFeedback" FontSize="12" Foreground="{StaticResource TextMuted}" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

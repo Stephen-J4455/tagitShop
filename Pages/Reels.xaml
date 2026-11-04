@@ -1,0 +1,55 @@
+﻿<Page x:Class="Reels"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:tagitShop"
+      mc:Ignorable="d"
+      Background="{StaticResource WindowBackground}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="32,32,32,32">
+
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Reels" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
+                    <TextBlock Text="Short-form video content for your store" FontSize="14" Foreground="{StaticResource TextMuted}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Content="+ Upload Reel" Style="{StaticResource PrimaryButton}" Click="BtnUploadReel_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Text="Your Reels" Style="{StaticResource SectionHeader}" Margin="0,0,0,12"/>
+            <ItemsControl x:Name="ReelsGrid">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource TextWhite}" CornerRadius="12" BorderBrush="{StaticResource TagitBorder}" BorderThickness="1" Width="240" Margin="0,0,16,16">
+                            <StackPanel>
+                                <Border Height="180" Background="{StaticResource TagitSurface}" CornerRadius="8" Margin="0,0,0,12">
+                                    <TextBlock Text="{Binding title}" FontSize="13" Foreground="{StaticResource TextDark}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" MaxWidth="200"/>
+                                </Border>
+                                <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextDark}">
+                                    <Run Text="{Binding views}"/><Run Text=" views"/>
+                                </TextBlock>
+                                <TextBlock Text="{Binding time}" FontSize="11" Foreground="{StaticResource TextMuted}"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock x:Name="TxtStatus" Text="Ready" FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,16,0,0"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
