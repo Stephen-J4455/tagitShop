@@ -15,7 +15,7 @@ Imports System.Reflection
 <Assembly: System.Reflection.AssemblyCompanyAttribute("tagitShop"),  _
  Assembly: System.Reflection.AssemblyConfigurationAttribute("Debug"),  _
  Assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0"),  _
- Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ed14f5caf12a80a1323a4e17be3d7a88a4d5e2aa"),  _
+ Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e448237233ddbb8624ec814372c2beeacb59e63"),  _
  Assembly: System.Reflection.AssemblyProductAttribute("tagitShop"),  _
  Assembly: System.Reflection.AssemblyTitleAttribute("tagitShop"),  _
  Assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0"),  _

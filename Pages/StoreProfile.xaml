@@ -38,13 +38,13 @@
                         <TextBlock Text="Keep your name and contact details current. Changes appear in the storefront preview." FontSize="12" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,5,0,8"/>
 
                         <TextBlock Text="Store name" Style="{StaticResource StoreFieldLabel}"/>
-                        <TextBox x:Name="TxtStoreName" Style="{StaticResource LoginInput}" TextChanged="StoreIdentity_TextChanged"/>
+                        <TextBox x:Name="TxtStoreName" Style="{StaticResource LoginInput}" Tag="Your store name" TextChanged="StoreIdentity_TextChanged"/>
 
                         <TextBlock Text="Contact email" Style="{StaticResource StoreFieldLabel}"/>
-                        <TextBox x:Name="TxtStoreEmail" Style="{StaticResource LoginInput}" TextChanged="StoreIdentity_TextChanged"/>
+                        <TextBox x:Name="TxtStoreEmail" Style="{StaticResource LoginInput}" Tag="contact@yourstore.com" TextChanged="StoreIdentity_TextChanged"/>
 
                         <TextBlock Text="About your store" Style="{StaticResource StoreFieldLabel}"/>
-                        <TextBox x:Name="TxtDescription" Height="128" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" TextChanged="StoreIdentity_TextChanged"/>
+                        <TextBox x:Name="TxtDescription" Height="128" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" Tag="Tell customers what makes your store special..." TextChanged="StoreIdentity_TextChanged"/>
 
                         <TextBlock Text="This description is shown to customers on your storefront." FontSize="11" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,7,0,0"/>
                         <TextBlock x:Name="TxtFeedback" FontSize="12" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,18,0,0"/>

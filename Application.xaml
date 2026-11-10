@@ -60,9 +60,11 @@
         <Geometry x:Key="InputIconPerson">M12,12 A4,4 0 1 0 12,4 A4,4 0 1 0 12,12 M4,21 C4,17 7,15 12,15 C17,15 20,17 20,21</Geometry>
         <Geometry x:Key="InputIconPhone">M7,3 H17 V21 H7 Z M10,18 H14</Geometry>
         <Geometry x:Key="InputIconNumber">M8,3 L5,21 M19,3 L16,21 M3,9 H21 M2,15 H20</Geometry>
+        <Geometry x:Key="InputIconCurrency">M12,3 V21 M17,7 C16,5 14,4 12,4 C9,4 7,6 7,8 C7,10 9,11 12,12 C15,13 17,14 17,16 C17,19 15,20 12,20 C9,20 7,19 6,17</Geometry>
         <Geometry x:Key="InputIconDate">M4,5 H20 V21 H4 Z M8,3 V7 M16,3 V7 M4,10 H20</Geometry>
         <Geometry x:Key="InputIconImage">M3,4 H21 V20 H3 Z M5,17 L10,11 L14,15 L17,12 L21,17 M8,8 H8.1</Geometry>
         <Geometry x:Key="InputIconLink">M10,13 L14,9 M8,15 L6,17 A4,4 0 0 1 0,11 L5,6 A4,4 0 0 1 11,6 M13,9 L15,7 A4,4 0 0 1 21,13 L16,18 A4,4 0 0 1 10,18</Geometry>
+        <Geometry x:Key="InputIconBank">M3,9 L12,3 L21,9 M5,9 V19 M10,9 V19 M14,9 V19 M19,9 V19 M3,20 H21</Geometry>
         <Geometry x:Key="InputIconLock">M5,10 H19 V21 H5 Z M8,10 V7 A4,4 0 0 1 16,7 V10 M12,14 V17</Geometry>
         <Geometry x:Key="InputIconEye">M2,12 C5,6 9,4 12,4 C15,4 19,6 22,12 C19,18 15,20 12,20 C9,20 5,18 2,12 Z M12,15 A3,3 0 1 0 12,9 A3,3 0 1 0 12,15</Geometry>
         <Geometry x:Key="InputIconEyeOff">M3,3 L21,21 M10,10 A3,3 0 0 0 14,14 M9,5 C10,4 11,4 12,4 C15,4 19,6 22,12 C21,14 20,15 18,17 M6,6 C4,7 3,9 2,12 C5,18 9,20 12,20 C14,20 16,19 18,17</Geometry>
@@ -413,12 +415,14 @@
         <Style x:Key="LoginInput" TargetType="TextBox">
             <Setter Property="Height" Value="44"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
             <Setter Property="CaretBrush" Value="{DynamicResource TagitPrimary}"/>
             <Setter Property="Background" Value="{DynamicResource InputSurface}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="38,0,12,0"/>
+            <Setter Property="local:InputPlaceholderBehavior.IsEnabled" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -429,27 +433,19 @@
                             <Grid ClipToBounds="True">
                                 <Path x:Name="InputIcon" Data="{StaticResource InputIconField}" Width="15" Height="15" Stretch="Uniform" Stroke="{DynamicResource TextMuted}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="13,0,0,0" IsHitTestVisible="False"/>
                                 <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
-                                <TextBlock x:Name="InputPlaceholder" Text="{TemplateBinding Tag}" Foreground="{DynamicResource TextMuted}" FontSize="{TemplateBinding FontSize}" Margin="38,0,12,0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" TextTrimming="CharacterEllipsis" IsHitTestVisible="False" Visibility="Collapsed"/>
+                                <TextBlock x:Name="InputPlaceholder" Text="{TemplateBinding Tag}" Foreground="{DynamicResource TextMuted}" FontSize="{TemplateBinding FontSize}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" TextWrapping="{TemplateBinding TextWrapping}" TextTrimming="CharacterEllipsis" IsHitTestVisible="False" Visibility="Collapsed"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                                <Setter TargetName="InputPlaceholder" Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
-                                <Setter TargetName="InputPlaceholder" Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
                                 <Setter TargetName="InputBorder" Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
                                 <Setter TargetName="InputBorder" Property="BorderThickness" Value="1.5"/>
                                 <Setter TargetName="InputIcon" Property="Stroke" Value="{DynamicResource TagitPrimary}"/>
-                                <Setter TargetName="InputPlaceholder" Property="Visibility" Value="Collapsed"/>
                             </Trigger>
                             <Trigger Property="AcceptsReturn" Value="True">
                                 <Setter TargetName="InputIcon" Property="VerticalAlignment" Value="Top"/>
                                 <Setter TargetName="InputIcon" Property="Margin" Value="13,12,0,0"/>
                                 <Setter TargetName="InputPlaceholder" Property="VerticalAlignment" Value="Top"/>
-                                <Setter TargetName="InputPlaceholder" Property="Margin" Value="38,10,12,0"/>
                             </Trigger>
                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="you@store.com">
                                 <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconEmail}"/>
@@ -463,7 +459,13 @@
                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Your full name">
                                 <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPerson}"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Your store name">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPerson}"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Customer name">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPerson}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Account name">
                                 <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPerson}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="e.g. John Doe">
@@ -473,7 +475,28 @@
                                 <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPhone}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="0.00">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconCurrency}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="0">
                                 <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconNumber}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="1">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconNumber}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Account number">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconNumber}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Price hint (GHC)">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconCurrency}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Bank name">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconBank}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Enter your password">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconLock}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="+233 20 000 0000">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPhone}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="2026-12-31">
                                 <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconDate}"/>
@@ -508,11 +531,13 @@
         <Style x:Key="LoginPassword" TargetType="PasswordBox">
             <Setter Property="Height" Value="44"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
             <Setter Property="Background" Value="{DynamicResource InputSurface}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="38,0,12,0"/>
+            <Setter Property="local:InputPlaceholderBehavior.IsEnabled" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
@@ -523,7 +548,7 @@
                             <Grid ClipToBounds="True">
                                 <Path x:Name="InputIcon" Data="{StaticResource InputIconLock}" Width="15" Height="15" Stretch="Uniform" Stroke="{DynamicResource TextMuted}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="13,0,0,0" IsHitTestVisible="False"/>
                                 <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
-                                <TextBlock x:Name="InputPlaceholder" Text="{TemplateBinding Tag}" Foreground="{DynamicResource TextMuted}" FontSize="{TemplateBinding FontSize}" Margin="38,0,12,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBlock x:Name="InputPlaceholder" Text="{TemplateBinding Tag}" Foreground="{DynamicResource TextMuted}" FontSize="{TemplateBinding FontSize}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" IsHitTestVisible="False" Visibility="Collapsed"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -549,17 +574,16 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="7">
+                        <Border x:Name="AdornmentSurface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource SidebarItemHover}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+                                <Setter TargetName="AdornmentSurface" Property="Background" Value="{DynamicResource SidebarItemHover}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
-                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter TargetName="AdornmentSurface" Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
+                                <Setter TargetName="AdornmentSurface" Property="BorderThickness" Value="1"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

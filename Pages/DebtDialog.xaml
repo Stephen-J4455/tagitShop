@@ -15,11 +15,11 @@
                     <TextBlock x:Name="TxtTitle" Text="Record debt" FontFamily="Georgia" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextDark}"/>
                     <TextBlock x:Name="TxtDescription" Text="Add an outstanding customer balance." FontSize="13" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,6,0,20"/>
                     <TextBlock Text="CUSTOMER" Style="{StaticResource FilterLabel}"/>
-                    <TextBox x:Name="TxtCustomer" Style="{StaticResource LoginInput}" Margin="0,0,0,15"/>
+                    <TextBox x:Name="TxtCustomer" Style="{StaticResource LoginInput}" Tag="Customer name" Margin="0,0,0,15"/>
                     <TextBlock x:Name="TxtAmountLabel" Text="AMOUNT OWED (GHC)" Style="{StaticResource FilterLabel}"/>
-                    <TextBox x:Name="TxtAmount" Style="{StaticResource LoginInput}" Margin="0,0,0,15"/>
+                    <TextBox x:Name="TxtAmount" Style="{StaticResource LoginInput}" Tag="0.00" Margin="0,0,0,15"/>
                     <TextBlock Text="NOTE" Style="{StaticResource FilterLabel}"/>
-                    <TextBox x:Name="TxtNote" Height="70" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" Margin="0,0,0,20"/>
+                    <TextBox x:Name="TxtNote" Height="70" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" Tag="Add an optional note..." Margin="0,0,0,20"/>
                 </StackPanel>
             </ScrollViewer>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">

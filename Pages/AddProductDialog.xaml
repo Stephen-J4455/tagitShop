@@ -94,8 +94,8 @@
                         </Grid>
                         <Grid Margin="0,0,0,18">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0"><TextBlock Text="COMPARE-AT PRICE (GHC)" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtCompareAtPrice" Style="{StaticResource LoginInput}" Tag="Optional"/></StackPanel>
-                            <StackPanel Grid.Column="2"><TextBlock Text="COST PER ITEM (GHC)" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtCostPrice" Style="{StaticResource LoginInput}" Tag="Optional"/></StackPanel>
+                            <StackPanel Grid.Column="0"><TextBlock Text="COMPARE-AT PRICE (GHC)" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtCompareAtPrice" Style="{StaticResource LoginInput}" Tag="0.00"/></StackPanel>
+                            <StackPanel Grid.Column="2"><TextBlock Text="COST PER ITEM (GHC)" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtCostPrice" Style="{StaticResource LoginInput}" Tag="0.00"/></StackPanel>
                         </Grid>
                         <TextBlock Text="SIZES" Style="{StaticResource FilterLabel}"/>
                         <WrapPanel x:Name="SizesPanel" Margin="0,0,0,14"/>
@@ -115,13 +115,13 @@
                         <TextBlock Text="ORGANIZATION" FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" Margin="0,0,0,10"/>
                         <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0"><TextBlock Text="SKU" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtSku" Style="{StaticResource LoginInput}" Tag="Optional"/></StackPanel>
-                            <StackPanel Grid.Column="2"><TextBlock Text="BARCODE" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtBarcode" Style="{StaticResource LoginInput}" Tag="Optional"/></StackPanel>
+                            <StackPanel Grid.Column="0"><TextBlock Text="SKU" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtSku" Style="{StaticResource LoginInput}" Tag="Enter SKU"/></StackPanel>
+                            <StackPanel Grid.Column="2"><TextBlock Text="BARCODE" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtBarcode" Style="{StaticResource LoginInput}" Tag="Enter barcode"/></StackPanel>
                         </Grid>
                         <Grid Margin="0,0,0,18">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0"><TextBlock Text="VENDOR" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtVendor" Style="{StaticResource LoginInput}" Tag="Optional"/></StackPanel>
-                            <StackPanel Grid.Column="2"><TextBlock Text="WEIGHT" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtWeight" Style="{StaticResource LoginInput}" Tag="Optional"/></StackPanel>
+                            <StackPanel Grid.Column="0"><TextBlock Text="VENDOR" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtVendor" Style="{StaticResource LoginInput}" Tag="Vendor name"/></StackPanel>
+                            <StackPanel Grid.Column="2"><TextBlock Text="WEIGHT" Style="{StaticResource FilterLabel}"/><TextBox x:Name="TxtWeight" Style="{StaticResource LoginInput}" Tag="0.0"/></StackPanel>
                             <StackPanel Grid.Column="4"><TextBlock Text="UNIT" Style="{StaticResource FilterLabel}"/><ComboBox x:Name="CmbWeightUnit" Height="42" Width="82" SelectedIndex="0"><ComboBoxItem Content="kg"/><ComboBoxItem Content="g"/><ComboBoxItem Content="lb"/><ComboBoxItem Content="oz"/></ComboBox></StackPanel>
                         </Grid>
                         <Border Background="{DynamicResource TagitSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" Padding="14">

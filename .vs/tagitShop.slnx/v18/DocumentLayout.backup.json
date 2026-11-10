@@ -1,7 +1,28 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Projects\\tagit\\tagitShop\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Projects\\tagit\\tagitdesktop\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|c:\\projects\\tagit\\tagitdesktop\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|c:\\projects\\tagit\\tagitdesktop\\pages\\orders.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|solutionrelative:pages\\orders.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|c:\\projects\\tagit\\tagitdesktop\\pages\\helpsupport.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|solutionrelative:pages\\helpsupport.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|c:\\projects\\tagit\\tagitdesktop\\pages\\debthistorydialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|solutionrelative:pages\\debthistorydialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|c:\\projects\\tagit\\tagitdesktop\\pages\\debtdialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{128578F9-6011-D0EB-5730-204359083C20}|tagitShop.vbproj|solutionrelative:pages\\debtdialog.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -18,6 +39,62 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Orders.xaml",
+              "DocumentMoniker": "C:\\Projects\\tagit\\tagitdesktop\\Pages\\Orders.xaml",
+              "RelativeDocumentMoniker": "Pages\\Orders.xaml",
+              "ToolTip": "C:\\Projects\\tagit\\tagitdesktop\\Pages\\Orders.xaml",
+              "RelativeToolTip": "Pages\\Orders.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-11-10T06:41:49.694Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HelpSupport.xaml",
+              "DocumentMoniker": "C:\\Projects\\tagit\\tagitdesktop\\Pages\\HelpSupport.xaml",
+              "RelativeDocumentMoniker": "Pages\\HelpSupport.xaml",
+              "ToolTip": "C:\\Projects\\tagit\\tagitdesktop\\Pages\\HelpSupport.xaml",
+              "RelativeToolTip": "Pages\\HelpSupport.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-11-10T06:41:47.365Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Projects\\tagit\\tagitdesktop\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "C:\\Projects\\tagit\\tagitdesktop\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-11-10T06:40:40.327Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DebtHistoryDialog.xaml",
+              "DocumentMoniker": "C:\\Projects\\tagit\\tagitdesktop\\Pages\\DebtHistoryDialog.xaml",
+              "RelativeDocumentMoniker": "Pages\\DebtHistoryDialog.xaml",
+              "ToolTip": "C:\\Projects\\tagit\\tagitdesktop\\Pages\\DebtHistoryDialog.xaml",
+              "RelativeToolTip": "Pages\\DebtHistoryDialog.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-11-10T06:41:45.211Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DebtDialog.xaml",
+              "DocumentMoniker": "C:\\Projects\\tagit\\tagitdesktop\\Pages\\DebtDialog.xaml",
+              "RelativeDocumentMoniker": "Pages\\DebtDialog.xaml",
+              "ToolTip": "C:\\Projects\\tagit\\tagitdesktop\\Pages\\DebtDialog.xaml",
+              "RelativeToolTip": "Pages\\DebtDialog.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-11-10T06:41:41.213Z"
             }
           ]
         }

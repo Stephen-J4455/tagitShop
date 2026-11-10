@@ -10,6 +10,7 @@ Class MainWindow
     Private sidebarCollapsed As Boolean = False
     Private passwordVisible As Boolean
     Private syncingPassword As Boolean
+    Private currentPageLabel As String = "Overview"
 
     Private Async Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         ThemeManager.Initialize()
@@ -20,6 +21,10 @@ Class MainWindow
             LoginPanel.Visibility = Visibility.Visible
             DashboardPanel.Visibility = Visibility.Collapsed
         End If
+    End Sub
+
+    Private Sub BtnTagAI_Click(sender As Object, e As RoutedEventArgs)
+        NavigateToPage(New TagAI(currentPageLabel))
     End Sub
 
     Private Sub BtnThemeToggle_Click(sender As Object, e As RoutedEventArgs)
@@ -87,7 +92,6 @@ Class MainWindow
     End Sub
 
     Private Sub PwdLoginPassword_PasswordChanged(sender As Object, e As RoutedEventArgs)
-        UpdatePasswordPlaceholder(PwdLoginPassword)
         If syncingPassword Then Return
 
         syncingPassword = True
@@ -114,6 +118,7 @@ Class MainWindow
             PasswordEyeOpen.Visibility = Visibility.Collapsed
             PasswordEyeClosed.Visibility = Visibility.Visible
             BtnTogglePassword.ToolTip = "Hide password"
+            System.Windows.Automation.AutomationProperties.SetName(BtnTogglePassword, "Hide password")
         Else
             PwdLoginPassword.Password = TxtLoginPasswordReveal.Text
             TxtLoginPasswordReveal.Visibility = Visibility.Collapsed
@@ -122,14 +127,7 @@ Class MainWindow
             PasswordEyeOpen.Visibility = Visibility.Visible
             PasswordEyeClosed.Visibility = Visibility.Collapsed
             BtnTogglePassword.ToolTip = "Show password"
-        End If
-    End Sub
-
-    Private Sub UpdatePasswordPlaceholder(passwordBox As PasswordBox)
-        If passwordBox.Template Is Nothing Then Return
-        Dim placeholder = TryCast(passwordBox.Template.FindName("InputPlaceholder", passwordBox), TextBlock)
-        If placeholder IsNot Nothing Then
-            placeholder.Visibility = If(String.IsNullOrEmpty(passwordBox.Password), Visibility.Visible, Visibility.Collapsed)
+            System.Windows.Automation.AutomationProperties.SetName(BtnTogglePassword, "Show password")
         End If
     End Sub
 
@@ -220,6 +218,7 @@ Class MainWindow
         MainFrame.Content = Nothing
         DashboardPanel.Visibility = Visibility.Collapsed
         LoginPanel.Visibility = Visibility.Visible
+        BtnTagAI.Visibility = Visibility.Collapsed
         LoginCard.Visibility = Visibility.Visible
         TxtLoginEmail.Text = String.Empty
         PwdLoginPassword.Password = String.Empty
@@ -235,6 +234,7 @@ Class MainWindow
     Private Sub EnterDashboard()
         LoginPanel.Visibility = Visibility.Collapsed
         DashboardPanel.Visibility = Visibility.Visible
+        BtnTagAI.Visibility = Visibility.Visible
         TxtSidebarStoreName.Text = AppSession.StoreName
         TxtModeBadge.Text = If(AppSession.Mode = StoreMode.Live, "LIVE / CONNECTED", "DEMO / LOCAL")
         DataCache.EnsureLoadedAsync()
@@ -289,7 +289,10 @@ Class MainWindow
         MainFrame.Navigate(page)
         If activeNavigation IsNot Nothing Then activeNavigation.Style = DirectCast(FindResource("SidebarButton"), Style)
         activeNavigation = navButton
-        If activeNavigation IsNot Nothing Then activeNavigation.Style = DirectCast(FindResource("SidebarButtonActive"), Style)
+        If activeNavigation IsNot Nothing Then
+            activeNavigation.Style = DirectCast(FindResource("SidebarButtonActive"), Style)
+            currentPageLabel = GetButtonText(activeNavigation)
+        End If
     End Sub
 
     Public Sub RefreshStoreIdentity()

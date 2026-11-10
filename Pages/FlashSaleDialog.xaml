@@ -46,7 +46,7 @@
                     </Grid>
 
                     <TextBlock Text="MAX QUANTITY (optional)" Style="{StaticResource FilterLabel}"/>
-                    <TextBox x:Name="TxtMaxQuantity" Style="{StaticResource LoginInput}" Tag="Optional" Margin="0,0,0,8"/>
+                    <TextBox x:Name="TxtMaxQuantity" Style="{StaticResource LoginInput}" Tag="Leave blank for no limit" Margin="0,0,0,8"/>
                 </StackPanel>
             </ScrollViewer>
 

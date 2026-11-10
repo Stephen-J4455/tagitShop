@@ -7,7 +7,7 @@
             <Border Background="{DynamicResource CardSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" Padding="24" MaxWidth="720" HorizontalAlignment="Left">
                 <StackPanel>
                     <TextBlock Text="STATUS TEXT" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TagitAccent}" Margin="0,0,0,18"/>
-                    <TextBox x:Name="TxtStatusText" Height="120" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" Margin="0,0,0,18"/>
+                    <TextBox x:Name="TxtStatusText" Height="120" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" Tag="Write a short update for your customers..." Margin="0,0,0,18"/>
 
                     <TextBlock Text="BACKGROUND COLOR" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TagitAccent}" Margin="0,0,0,18"/>
                     <WrapPanel Margin="0,0,0,20">

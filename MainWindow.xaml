@@ -31,6 +31,7 @@
                     <TextBlock Text="tagitShop" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextDark}" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnTagAI" Content="TagAI" Style="{StaticResource OutlineButton}" MinWidth="76" Height="32" Margin="0,0,8,0" Click="BtnTagAI_Click" Visibility="Collapsed" ToolTip="Open TagAI assistant"/>
                     <Button x:Name="BtnThemeToggle" Content="Dark mode" Style="{StaticResource GhostButton}" MinWidth="104" Height="32" Margin="0,0,8,0" Click="BtnThemeToggle_Click" ToolTip="Switch to dark mode"/>
                     <Button x:Name="BtnMinimize" Content="_" Style="{StaticResource WindowControlButton}" Click="BtnMinimize_Click"/>
                     <Button x:Name="BtnMaximize" Content="□" Style="{StaticResource WindowControlButton}" Click="BtnMaximize_Click"/>
@@ -71,7 +72,7 @@
                     <Border x:Name="LoginCard" Style="{StaticResource LoginCard}" Width="440" Padding="36" VerticalAlignment="Center">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,8">
-                                <Image Source="Assets/tagit-icon.png" Width="42" Height="42" Stretch="Uniform" Margin="0,0,12,0"/>
+                                <Image Source="Assets/tagit-icon.png" Width="42" Height="42" Stretch="Uniform" Margin="0,0,12,0" AutomationProperties.Name="Tagit"/>
                                 <TextBlock Text="Sign in to Tagit" FontFamily="{StaticResource FontHeading}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextDark}" VerticalAlignment="Center"/>
                             </StackPanel>
                             <TextBlock Text="Use your store account, or enter the demo credentials below." FontSize="14" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,0,0,24"/>
@@ -83,7 +84,7 @@
                             <Grid Margin="0,0,0,12">
                                 <PasswordBox x:Name="PwdLoginPassword" Style="{StaticResource LoginPassword}" Tag="Enter your password" Padding="38,0,42,0" PasswordChanged="PwdLoginPassword_PasswordChanged"/>
                                 <TextBox x:Name="TxtLoginPasswordReveal" Style="{StaticResource LoginInput}" Tag="Enter your password" Padding="38,0,42,0" Visibility="Collapsed" TextChanged="TxtLoginPasswordReveal_TextChanged"/>
-                                <Button x:Name="BtnTogglePassword" Style="{StaticResource InputAdornmentButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="BtnTogglePassword_Click">
+                                <Button x:Name="BtnTogglePassword" Style="{StaticResource InputAdornmentButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="BtnTogglePassword_Click" AutomationProperties.Name="Show password">
                                     <Grid Width="17" Height="17">
                                         <Path x:Name="PasswordEyeOpen" Data="{StaticResource InputIconEye}" Stretch="Uniform" Stroke="{DynamicResource TextMuted}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent"/>
                                         <Path x:Name="PasswordEyeClosed" Data="{StaticResource InputIconEyeOff}" Stretch="Uniform" Stroke="{DynamicResource TextMuted}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Visibility="Collapsed"/>

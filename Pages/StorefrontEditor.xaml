@@ -10,14 +10,13 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,14,0,7"/>
         </Style>
-        <Style x:Key="EditorInputBox" TargetType="TextBox">
+        <Style x:Key="EditorInputBox" TargetType="TextBox" BasedOn="{StaticResource LoginInput}">
             <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
             <Setter Property="Background" Value="{DynamicResource InputSurface}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="11,8"/>
+            <Setter Property="Padding" Value="38,8,12,8"/>
             <Setter Property="FontSize" Value="13"/>
-            <Setter Property="CaretBrush" Value="{DynamicResource TagitPrimary}"/>
             <Setter Property="SelectionBrush" Value="#88FF5A79"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
@@ -443,7 +442,7 @@
                     <Grid Margin="0,0,0,4">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                         <TextBlock Text="Custom hex" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                        <TextBox x:Name="TxtThemeColor" Grid.Column="1" Height="38" Style="{StaticResource EditorInputBox}" MaxLength="7" ToolTip="Enter a six-digit color, such as #FF5A79"/>
+                        <TextBox x:Name="TxtThemeColor" Grid.Column="1" Height="38" Style="{StaticResource EditorInputBox}" Tag="#FF5A79" MaxLength="7" ToolTip="Enter a six-digit color, such as #FF5A79"/>
                     </Grid>
 
                     <TextBlock Text="Store layout" Foreground="{DynamicResource TextDark}" FontSize="14" FontWeight="Bold" Margin="0,16,0,4"/>
@@ -465,42 +464,42 @@
                         <Border Background="{DynamicResource CardSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,10,0,0">
                             <StackPanel>
                                 <TextBlock Text="Store name" Style="{StaticResource EditorLabel}" Margin="0,0,0,7"/>
-                                <TextBox x:Name="TxtStoreName" Height="40" Style="{StaticResource EditorInputBox}" TextChanged="PreviewTextChanged"/>
+                                <TextBox x:Name="TxtStoreName" Height="40" Style="{StaticResource EditorInputBox}" Tag="Your store name" TextChanged="PreviewTextChanged"/>
                                 <TextBlock Text="Contact email" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtStoreEmail" Height="40" Style="{StaticResource EditorInputBox}"/>
+                                <TextBox x:Name="TxtStoreEmail" Height="40" Style="{StaticResource EditorInputBox}" Tag="contact@yourstore.com"/>
                                 <TextBlock Text="Store description" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtDescription" Height="74" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}" TextChanged="PreviewTextChanged"/>
+                                <TextBox x:Name="TxtDescription" Height="74" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}" Tag="Tell customers what makes your store special..." TextChanged="PreviewTextChanged"/>
                                 <TextBlock Text="Store description (detail page)" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtStoreDescription" Height="74" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}"/>
+                                <TextBox x:Name="TxtStoreDescription" Height="74" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}" Tag="Add more details about your store..."/>
 
                                 <TextBlock Text="Images" Foreground="{DynamicResource TextDark}" FontSize="13" FontWeight="Bold" Margin="0,22,0,0"/>
                                 <TextBlock Text="Avatar / logo" Style="{StaticResource EditorLabel}"/>
                                 <DockPanel Margin="0,0,0,8" LastChildFill="True">
                                     <Button Content="Browse" DockPanel.Dock="Right" Style="{StaticResource EditorButton}" Height="38" Margin="8,0,0,0" Click="BtnBrowseAvatar_Click"/>
-                                    <TextBox x:Name="TxtAvatar" Height="38" Style="{StaticResource EditorInputBox}" ToolTip="Avatar image URL or file path" TextChanged="PreviewImageChanged"/>
+                                    <TextBox x:Name="TxtAvatar" Height="38" Style="{StaticResource EditorInputBox}" Tag="Paste image URL or browse..." ToolTip="Avatar image URL or file path" TextChanged="PreviewImageChanged"/>
                                 </DockPanel>
                                 <TextBlock Text="Cover image" Style="{StaticResource EditorLabel}"/>
                                 <DockPanel Margin="0,0,0,8" LastChildFill="True">
                                     <Button Content="Browse" DockPanel.Dock="Right" Style="{StaticResource EditorButton}" Height="38" Margin="8,0,0,0" Click="BtnBrowseCover_Click"/>
-                                    <TextBox x:Name="TxtCoverImage" Height="38" Style="{StaticResource EditorInputBox}" ToolTip="Hero cover image URL or file path" TextChanged="PreviewImageChanged"/>
+                                    <TextBox x:Name="TxtCoverImage" Height="38" Style="{StaticResource EditorInputBox}" Tag="Paste hero image URL or browse..." ToolTip="Hero cover image URL or file path" TextChanged="PreviewImageChanged"/>
                                 </DockPanel>
                                 <TextBlock Text="Second cover image" Style="{StaticResource EditorLabel}"/>
                                 <DockPanel Margin="0,0,0,8" LastChildFill="True">
                                     <Button Content="Browse" DockPanel.Dock="Right" Style="{StaticResource EditorButton}" Height="38" Margin="8,0,0,0" Click="BtnBrowseCover2_Click"/>
-                                    <TextBox x:Name="TxtCoverImage2" Height="38" Style="{StaticResource EditorInputBox}" ToolTip="Secondary cover image URL or file path" TextChanged="PreviewImageChanged"/>
+                                    <TextBox x:Name="TxtCoverImage2" Height="38" Style="{StaticResource EditorInputBox}" Tag="Paste secondary image URL or browse..." ToolTip="Secondary cover image URL or file path" TextChanged="PreviewImageChanged"/>
                                 </DockPanel>
 
                                 <TextBlock Text="Social links" Foreground="{DynamicResource TextDark}" FontSize="13" FontWeight="Bold" Margin="0,22,0,0"/>
                                 <TextBlock Text="Website" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialWebsite" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBox x:Name="TxtSocialWebsite" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL"/>
                                 <TextBlock Text="Facebook" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialFacebook" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBox x:Name="TxtSocialFacebook" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL"/>
                                 <TextBlock Text="Instagram" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialInstagram" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBox x:Name="TxtSocialInstagram" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL"/>
                                 <TextBlock Text="Twitter / X" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialTwitter" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBox x:Name="TxtSocialTwitter" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL"/>
                                 <TextBlock Text="WhatsApp" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialWhatsapp" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBox x:Name="TxtSocialWhatsapp" Height="38" Style="{StaticResource EditorInputBox}" Tag="+233 20 000 0000"/>
                             </StackPanel>
                         </Border>
                     </Expander>

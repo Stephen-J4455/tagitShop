@@ -272,6 +272,46 @@ Public NotInheritable Class SupabaseService
         Throw lastError
     End Function
 
+    Public Shared Async Function AskDesktopAssistantAsync(message As String,
+                                                           currentPage As String,
+                                                           desktopGuide As String,
+                                                           recordContext As String,
+                                                           history As IEnumerable(Of String)) As Task(Of String)
+        If AppSession.Mode <> StoreMode.Live Then
+            Throw New InvalidOperationException("Online TagAI is available after signing in to a live store.")
+        End If
+
+        Dim payload = JsonSerializer.Serialize(New With {
+            .mode = "desktop_assistant",
+            .message = If(message, String.Empty),
+            .current_page = If(currentPage, String.Empty),
+            .desktop_guide = If(desktopGuide, String.Empty),
+            .record_context = If(recordContext, String.Empty),
+            .history = If(history, Enumerable.Empty(Of String)()).
+                TakeLast(8).
+                Select(Function(text) New With {.role = "user", .text = text}).
+                ToList()
+        })
+        Dim response = Await SendAsync(HttpMethod.Post, "/functions/v1/ai-assistant", payload, True)
+        Using json = JsonDocument.Parse(response)
+            Dim root = json.RootElement
+            Dim success As JsonElement
+            If Not root.TryGetProperty("success", success) OrElse success.ValueKind <> JsonValueKind.True Then
+                Dim errorMessage As JsonElement
+                If root.TryGetProperty("error", errorMessage) AndAlso errorMessage.ValueKind = JsonValueKind.String Then
+                    Throw New InvalidOperationException(errorMessage.GetString())
+                End If
+                Throw New InvalidOperationException("TagAI could not answer this question.")
+            End If
+
+            Dim reply As JsonElement
+            If Not root.TryGetProperty("reply", reply) OrElse reply.ValueKind <> JsonValueKind.String OrElse String.IsNullOrWhiteSpace(reply.GetString()) Then
+                Throw New InvalidOperationException("TagAI returned an empty answer.")
+            End If
+            Return reply.GetString()
+        End Using
+    End Function
+
     Public Shared Async Function EnqueueProductVideoTranscodeAsync(productId As String, sourceKey As String) As Task
         Dim payload = JsonSerializer.Serialize(New With {
             .sourceKey = sourceKey,
