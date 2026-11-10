@@ -6,6 +6,10 @@ Public Enum SalesRange
     Daily
     Monthly
     Yearly
+    Weekly
+    CurrentMonth
+    SixMonths
+    CurrentYear
 End Enum
 
 Public Class SalesBucket
@@ -35,10 +39,31 @@ Public NotInheritable Class SalesAnalytics
                     Dim dateValue = today.AddDays(-offset)
                     buckets.Add(New SalesBucket() With {.Start = dateValue, .Label = dateValue.ToString("ddd"), .GrossProfit = 0D})
                 Next
+            Case SalesRange.Weekly
+                For offset = 6 To 0 Step -1
+                    Dim dateValue = today.AddDays(-offset)
+                    buckets.Add(New SalesBucket() With {.Start = dateValue, .Label = dateValue.ToString("ddd"), .GrossProfit = 0D})
+                Next
+            Case SalesRange.CurrentMonth
+                For offset = today.Day - 1 To 0 Step -1
+                    Dim dateValue = today.AddDays(-offset)
+                    buckets.Add(New SalesBucket() With {.Start = dateValue, .Label = dateValue.ToString("d"), .GrossProfit = 0D})
+                Next
             Case SalesRange.Monthly
                 Dim currentMonth = New DateTime(today.Year, today.Month, 1)
                 For offset = 11 To 0 Step -1
                     Dim dateValue = currentMonth.AddMonths(-offset)
+                    buckets.Add(New SalesBucket() With {.Start = dateValue, .Label = dateValue.ToString("MMM"), .GrossProfit = 0D})
+                Next
+            Case SalesRange.SixMonths
+                Dim currentMonth = New DateTime(today.Year, today.Month, 1)
+                For offset = 5 To 0 Step -1
+                    Dim dateValue = currentMonth.AddMonths(-offset)
+                    buckets.Add(New SalesBucket() With {.Start = dateValue, .Label = dateValue.ToString("MMM"), .GrossProfit = 0D})
+                Next
+            Case SalesRange.CurrentYear
+                For monthIndex = 1 To today.Month
+                    Dim dateValue = New DateTime(today.Year, monthIndex, 1)
                     buckets.Add(New SalesBucket() With {.Start = dateValue, .Label = dateValue.ToString("MMM"), .GrossProfit = 0D})
                 Next
             Case SalesRange.Yearly
@@ -93,7 +118,11 @@ Public NotInheritable Class SalesAnalytics
         Select Case range
             Case SalesRange.Daily
                 Return saleDate.Date = bucketStart.Date
+            Case SalesRange.Weekly, SalesRange.CurrentMonth
+                Return saleDate.Date = bucketStart.Date
             Case SalesRange.Monthly
+                Return saleDate.Year = bucketStart.Year AndAlso saleDate.Month = bucketStart.Month
+            Case SalesRange.SixMonths, SalesRange.CurrentYear
                 Return saleDate.Year = bucketStart.Year AndAlso saleDate.Month = bucketStart.Month
             Case SalesRange.Yearly
                 Return saleDate.Year = bucketStart.Year

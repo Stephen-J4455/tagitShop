@@ -27,11 +27,12 @@ Public NotInheritable Class SalesChartRenderer
         If valueRange <= 0D Then valueRange = 1D
         Dim muted = TryCast(Application.Current.Resources("TextMuted"), Brush)
         Dim revenueBrush = TryCast(Application.Current.Resources("TagitAccent"), Brush)
-        Dim profitBrush = TryCast(Application.Current.Resources("TagitPrimary"), Brush)
+        Dim profitBrush = TryCast(Application.Current.Resources("TagitDark"), Brush)
+        Dim gridBrush = TryCast(Application.Current.Resources("TagitBorder"), Brush)
 
         For gridIndex = 0 To 4
             Dim y = top + (plotHeight * gridIndex / 4D)
-            Dim line = New Line() With {.X1 = left, .X2 = width - right, .Y1 = y, .Y2 = y, .Stroke = New SolidColorBrush(Color.FromRgb(&HE5, &HE9, &HE3)), .StrokeThickness = 1}
+            Dim line = New Line() With {.X1 = left, .X2 = width - right, .Y1 = y, .Y2 = y, .Stroke = gridBrush, .StrokeThickness = 1}
             canvas.Children.Add(line)
             Dim gridValue = maxValue - (valueRange * gridIndex / 4D)
             Dim label = New TextBlock() With {.Text = gridValue.ToString("N0"), .FontSize = 9, .Foreground = muted, .Width = left - 8, .TextAlignment = TextAlignment.Right}

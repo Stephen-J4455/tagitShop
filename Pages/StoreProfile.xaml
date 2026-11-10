@@ -1,24 +1,104 @@
-<Page x:Class="StoreProfile"
+﻿<Page x:Class="StoreProfile"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Background="{StaticResource WindowBackground}">
+      Background="{DynamicResource WindowBackground}">
+    <Page.Resources>
+        <Style x:Key="StoreFieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Margin" Value="0,14,0,6"/>
+        </Style>
+    </Page.Resources>
+
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="30,28,30,30">
-            <TextBlock Text="Store settings" FontFamily="Georgia" FontSize="26" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
-            <TextBlock Text="Manage the name and public contact details for this store." FontSize="13" Foreground="{StaticResource TextMuted}" Margin="0,5,0,20"/>
-            <Border Background="{StaticResource TextWhite}" BorderBrush="{StaticResource TagitBorder}" BorderThickness="1" Padding="24" MaxWidth="720" HorizontalAlignment="Left">
-                <StackPanel>
-                    <TextBlock Text="STORE IDENTITY" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TagitAccent}" Margin="0,0,0,18"/>
-                    <TextBlock Text="STORE NAME" Style="{StaticResource FilterLabel}"/>
-                    <TextBox x:Name="TxtStoreName" Style="{StaticResource LoginInput}" Margin="0,0,0,16"/>
-                    <TextBlock Text="CONTACT EMAIL" Style="{StaticResource FilterLabel}"/>
-                    <TextBox x:Name="TxtStoreEmail" Style="{StaticResource LoginInput}" Margin="0,0,0,16"/>
-                    <TextBlock Text="STORE DESCRIPTION" Style="{StaticResource FilterLabel}"/>
-                    <TextBox x:Name="TxtDescription" Height="120" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" Margin="0,0,0,18"/>
-                    <Button Content="Save store profile" Style="{StaticResource PrimaryButton}" Height="42" HorizontalAlignment="Left" Padding="18,8" Click="BtnSave_Click"/>
-                    <TextBlock x:Name="TxtFeedback" FontSize="12" Foreground="{StaticResource TextMuted}" Margin="0,12,0,0" TextWrapping="Wrap"/>
+        <StackPanel Margin="30,24,30,30">
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Store profile" FontSize="26" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}"/>
+                    <TextBlock Text="Set the details customers see when they visit your shop." FontSize="13" Foreground="{DynamicResource TextMuted}" Margin="0,5,0,0"/>
                 </StackPanel>
-            </Border>
+                <Button x:Name="BtnSave" Grid.Column="1" Content="Save changes" Style="{StaticResource PrimaryButton}" Height="40" Padding="18,8" VerticalAlignment="Center" IsEnabled="False" Click="BtnSave_Click"/>
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.08*"/>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="0.92*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource Card}" Padding="24">
+                    <StackPanel>
+                        <TextBlock Text="Your shop details" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}"/>
+                        <TextBlock Text="Keep your name and contact details current. Changes appear in the storefront preview." FontSize="12" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,5,0,8"/>
+
+                        <TextBlock Text="Store name" Style="{StaticResource StoreFieldLabel}"/>
+                        <TextBox x:Name="TxtStoreName" Style="{StaticResource LoginInput}" TextChanged="StoreIdentity_TextChanged"/>
+
+                        <TextBlock Text="Contact email" Style="{StaticResource StoreFieldLabel}"/>
+                        <TextBox x:Name="TxtStoreEmail" Style="{StaticResource LoginInput}" TextChanged="StoreIdentity_TextChanged"/>
+
+                        <TextBlock Text="About your store" Style="{StaticResource StoreFieldLabel}"/>
+                        <TextBox x:Name="TxtDescription" Height="128" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource LoginInput}" TextChanged="StoreIdentity_TextChanged"/>
+
+                        <TextBlock Text="This description is shown to customers on your storefront." FontSize="11" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,7,0,0"/>
+                        <TextBlock x:Name="TxtFeedback" FontSize="12" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,18,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Storefront preview" FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}"/>
+                    <TextBlock Text="A quick look at how your store identity comes together." FontSize="12" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,4,0,12"/>
+
+                    <Border Background="{DynamicResource CardSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" CornerRadius="14" Padding="8">
+                        <StackPanel>
+                            <Border Background="{DynamicResource SidebarSurface}" CornerRadius="8,8,0,0" Padding="12,9">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Ellipse Width="7" Height="7" Fill="{DynamicResource TagitPrimary}" Margin="0,0,5,0"/>
+                                    <Ellipse Width="7" Height="7" Fill="{DynamicResource TextMuted}" Opacity="0.45" Margin="0,0,5,0"/>
+                                    <Ellipse Width="7" Height="7" Fill="{DynamicResource TextMuted}" Opacity="0.25" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Store preview" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="{DynamicResource CardSurface}" Padding="16">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,14">
+                                        <Border Width="34" Height="34" Background="{DynamicResource TagitPrimary}" CornerRadius="10">
+                                            <TextBlock x:Name="PreviewStoreInitial" Text="T" FontSize="15" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock x:Name="PreviewStoreName" Text="Your store" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" VerticalAlignment="Center" Margin="9,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+
+                                    <Border Background="{DynamicResource TagitDark}" CornerRadius="10" Padding="18" MinHeight="142">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="WELCOME TO OUR SHOP" FontSize="9" FontWeight="Bold" Foreground="#FFC5D1" Margin="0,0,0,8"/>
+                                            <TextBlock x:Name="PreviewHeroName" Text="Your store" FontSize="21" FontWeight="Bold" Foreground="{DynamicResource TextWhite}" TextWrapping="Wrap"/>
+                                            <TextBlock x:Name="PreviewDescription" Text="Tell customers what makes your store special." FontSize="11" Foreground="#D7DCE4" TextWrapping="Wrap" LineHeight="17" Margin="0,7,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border BorderBrush="{DynamicResource TagitBorder}" BorderThickness="0,0,0,1" Margin="0,14,0,11"/>
+                                    <TextBlock Text="Contact" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock x:Name="PreviewEmail" Text="Contact email" FontSize="12" Foreground="{DynamicResource TextDark}" TextTrimming="CharacterEllipsis" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{DynamicResource SidebarItemActive}" CornerRadius="10" Padding="14" Margin="0,12,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{DynamicResource TagitPrimary}" Margin="0,1,9,0"/>
+                            <TextBlock Text="Preview updates as you edit. Save to update the details shown on your storefront." FontSize="11" Foreground="{DynamicResource TextDark}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 </Page>

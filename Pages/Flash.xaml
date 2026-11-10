@@ -1,30 +1,56 @@
 ﻿<Page x:Class="Flash"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:local="clr-namespace:tagitShop"
-      mc:Ignorable="d"
-      Background="{StaticResource WindowBackground}">
-
+      Background="{DynamicResource WindowBackground}">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="32,32,32,32">
-
-            <Grid Margin="0,0,0,24">
+        <StackPanel Margin="28,20,28,28">
+            <Grid Margin="0,0,0,18">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="Flash Sales" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
-                    <TextBlock Text="Limited-time promotions and discounts" FontSize="14" Foreground="{StaticResource TextMuted}" Margin="0,4,0,0"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="9" Height="9" Fill="{StaticResource SuccessColor}" Margin="0,0,9,0"/>
+                    <TextBlock x:Name="TxtActiveSummary" Text="0 active offers" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" VerticalAlignment="Center"/>
+                    <TextBlock Text="Only live, available offers are shown" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="12,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button Content="+ Create Flash Sale" Style="{StaticResource PrimaryButton}" Click="BtnCreateFlash_Click"/>
-                </StackPanel>
+                <Button Grid.Column="1" Content="+ Create Flash Sale" Style="{StaticResource PrimaryButton}" Height="40" Padding="16,8" Click="BtnCreateFlash_Click"/>
             </Grid>
 
-            <TextBlock Text="Active Flash Sales" Style="{StaticResource SectionHeader}" Margin="0,0,0,12"/>
+            <ProgressBar x:Name="LoadingIndicator" Height="3" IsIndeterminate="True" Visibility="Collapsed" Margin="0,0,0,14" Foreground="{StaticResource TagitPrimary}" Background="{DynamicResource TagitBorder}"/>
+
+            <Border x:Name="ActiveSalesSummary" Background="#242424" CornerRadius="14" Padding="20" Margin="0,0,0,16" Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Offers running now" FontSize="13" FontWeight="SemiBold" Foreground="#F2F2F2"/>
+                        <TextBlock Text="Live discounts across your active catalog" FontSize="11" Foreground="#C5C5C5" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="18,0,26,0">
+                        <TextBlock Text="LIVE OFFERS" FontSize="9" FontWeight="Bold" Foreground="#C5C5C5"/>
+                        <TextBlock x:Name="TxtActiveCount" Text="0" FontSize="23" FontWeight="SemiBold" Foreground="White" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="ENDING NEXT" FontSize="9" FontWeight="Bold" Foreground="#C5C5C5"/>
+                        <TextBlock x:Name="TxtNextEnding" Text="—" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TagitPrimary}" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border x:Name="EmptyFlashState" Background="{DynamicResource CardSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" CornerRadius="14" Padding="30" Visibility="Collapsed">
+                <StackPanel HorizontalAlignment="Center" MaxWidth="420">
+                    <Border Width="46" Height="46" Background="{DynamicResource SidebarItemActive}" CornerRadius="23">
+                        <TextBlock Text="&#xE8C7;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{StaticResource TagitPrimary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock x:Name="TxtEmptyTitle" Text="No flash sales are live" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" HorizontalAlignment="Center" Margin="0,12,0,0"/>
+                    <TextBlock x:Name="TxtEmptyMessage" Text="Scheduled, ended, paused, and sold-out offers stay off this page." FontSize="12" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+
             <ItemsControl x:Name="FlashGrid">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -33,32 +59,80 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="{StaticResource TextWhite}" CornerRadius="12" BorderBrush="{StaticResource TagitBorder}" BorderThickness="1" Width="260" Margin="0,0,16,16" Padding="16">
+                        <Border Background="{DynamicResource CardSurface}" CornerRadius="14" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" Width="310" Margin="0,0,14,14" Padding="17">
                             <StackPanel>
+                                <Border Background="{DynamicResource SidebarItemActive}" Height="140" Margin="0,0,0,13" ClipToBounds="True">
+                                    <Grid>
+                                        <TextBlock Text="&#xE8C7;" FontFamily="Segoe MDL2 Assets" FontSize="30" Foreground="{StaticResource TagitPrimary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Image Source="{Binding ImageUrl}" Stretch="UniformToFill"/>
+                                    </Grid>
+                                </Border>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding title}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextDark}"/>
-                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TagitPrimary}">
-                                        <Run Text="{Binding discount}"/><Run Text="% OFF"/>
-                                    </TextBlock>
+                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding TimeLeftLabel}" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="1" Background="{DynamicResource SidebarItemActive}" CornerRadius="12" Padding="9,5" Margin="10,0,0,0" VerticalAlignment="Top">
+                                        <TextBlock Text="{Binding DiscountLabel}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TagitPrimaryDark}"/>
+                                    </Border>
                                 </Grid>
-                                <TextBlock Text="{Binding description}" FontSize="12" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap" Margin="0,8,0,12"/>
-                                <Border Height="100" Background="{StaticResource TagitSurface}" CornerRadius="8" Margin="0,0,0,12">
-                                    <TextBlock Text="{Binding product}" FontSize="13" Foreground="{StaticResource TextDark}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                                <Border Background="{DynamicResource TagitSurface}" CornerRadius="10" Padding="13" Margin="0,14,0,13">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="FLASH PRICE" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource TextMuted}"/>
+                                            <TextBlock Text="{Binding FlashPriceLabel}" FontSize="21" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="8,0,0,2">
+                                            <TextBlock Text="WAS" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Right"/>
+                                            <TextBlock Text="{Binding OriginalPriceLabel}" FontSize="12" Foreground="{DynamicResource TextMuted}" TextDecorations="Strikethrough" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
-                                <TextBlock Text="Ends {Binding endTime}" FontSize="11" Foreground="{StaticResource TextMuted}"/>
-                                <ProgressBar Value="{Binding progress}" Height="6" Margin="0,8,0,0" Foreground="{StaticResource TagitPrimary}" Background="{StaticResource TagitBorder}"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Offer ends" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding EndTimeLabel}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}"/>
+                                </Grid>
+                                <Grid Margin="0,11,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding QuantityLabel}" FontSize="10" Foreground="{DynamicResource TextMuted}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding AvailabilityLabel}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}"/>
+                                </Grid>
+                                <ProgressBar Value="{Binding QuantityProgress}" Maximum="100" Height="5" Foreground="{StaticResource TagitPrimary}" Background="{DynamicResource TagitBorder}" Margin="0,7,0,0">
+                                    <ProgressBar.Style>
+                                        <Style TargetType="ProgressBar">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasQuantityLimit}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ProgressBar.Style>
+                                </ProgressBar>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <TextBlock x:Name="TxtStatus" Text="Ready" FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,16,0,0"/>
-
+            <TextBlock x:Name="TxtStatus" Text="Ready" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,5,0,0" TextWrapping="Wrap"/>
         </StackPanel>
     </ScrollViewer>
 </Page>

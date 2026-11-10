@@ -23,4 +23,8 @@
     <Resource Include="Assets\tagit-icon.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
+  </ItemGroup>
+
 </Project>

@@ -3,6 +3,7 @@ Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Windows
 Imports System.Windows.Controls
+Imports Microsoft.Win32
 
 Partial Public Class Debt
     Inherits Page
@@ -38,6 +39,8 @@ Partial Public Class Debt
         TxtDebtCustomers.Text = summary.Where(Function(item) item.balance > 0D).Select(Function(item) item.customer).Distinct(StringComparer.OrdinalIgnoreCase).Count().ToString()
         TxtDebtOrders.Text = summary.Where(Function(item) item.balance > 0D).Count().ToString()
         DebtGrid.ItemsSource = summary
+        DebtGridContainer.Visibility = If(summary.Count = 0, Visibility.Collapsed, Visibility.Visible)
+        EmptyDebtsState.Visibility = If(summary.Count = 0, Visibility.Visible, Visibility.Collapsed)
     End Sub
 
     Private Sub BtnRecordDebt_Click(sender As Object, e As RoutedEventArgs)
@@ -119,5 +122,31 @@ Partial Public Class Debt
 
         Dim dialog = New DebtHistoryDialog(item.Record) With {.Owner = Window.GetWindow(Me)}
         dialog.ShowDialog()
+    End Sub
+
+    Private Sub BtnExport_Click(sender As Object, e As RoutedEventArgs)
+        Dim records = LocalData.Load().DebtRecords
+        If records.Count = 0 Then
+            MessageBox.Show("There are no debt records to export.", "Export debt", MessageBoxButton.OK, MessageBoxImage.Information)
+            Return
+        End If
+
+        Dim dialog = New SaveFileDialog() With {
+            .Title = "Export debt records",
+            .Filter = "Excel workbook (*.xlsx)|*.xlsx",
+            .DefaultExt = ".xlsx",
+            .AddExtension = True,
+            .OverwritePrompt = True,
+            .FileName = "debt-records-" & DateTime.Today.ToString("yyyy-MM-dd") & ".xlsx"
+        }
+        If dialog.ShowDialog(Window.GetWindow(Me)) <> True Then Return
+
+        Try
+            ExcelExportService.ExportDebt(dialog.FileName, records)
+            TxtPageFeedback.Text = records.Count.ToString("N0") & " debt records exported."
+            MessageBox.Show(records.Count.ToString("N0") & " debt records exported successfully.", "Export complete", MessageBoxButton.OK, MessageBoxImage.Information)
+        Catch ex As Exception
+            MessageBox.Show("Debt records could not be exported. " & ex.Message, "Export failed", MessageBoxButton.OK, MessageBoxImage.Error)
+        End Try
     End Sub
 End Class

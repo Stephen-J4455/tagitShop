@@ -6,7 +6,7 @@
 dotnet run --project .\tagitShop.vbproj
 ```
 
-Choose **Open demo store** to use seeded data stored under `%LocalAppData%\tagitShop\data.json`. Choose **Sign in to a live store** to authenticate with the tagit Supabase account linked to a seller profile.
+Sign in with your tagit account to connect to a live store. To use the local demo, enter **demo@tagit.local** as the email and **demo** as the password; demo data is stored under `%LocalAppData%\tagitShop\data.json`.
 
 ## Live setup
 

@@ -5,26 +5,24 @@
       xmlns:d="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:tagitShop"
       mc:Ignorable="d"
-      Background="{StaticResource WindowBackground}">
+      Background="{DynamicResource WindowBackground}">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="32,32,32,32">
+        <StackPanel Margin="32,20,32,32">
 
-            <Grid Margin="0,0,0,24">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="Coupons" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
-                    <TextBlock Text="Discount codes and promotions" FontSize="14" Foreground="{StaticResource TextMuted}" Margin="0,4,0,0"/>
-                </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button Content="+ Create Coupon" Style="{StaticResource PrimaryButton}" Click="BtnCreateCoupon_Click"/>
-                </StackPanel>
-            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,16">
+                <Button Content="+ Create Coupon" Style="{StaticResource PrimaryButton}" Click="BtnCreateCoupon_Click"/>
+            </StackPanel>
+            <ProgressBar x:Name="LoadingIndicator" Height="3" IsIndeterminate="True" Visibility="Collapsed" Margin="0,0,0,16" Foreground="{StaticResource TagitPrimary}" Background="{DynamicResource TagitBorder}"/>
 
             <TextBlock Text="Your Coupons" Style="{StaticResource SectionHeader}" Margin="0,0,0,12"/>
+            <Border x:Name="EmptyCouponsState" Background="{DynamicResource CardSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" Padding="26" Margin="0,0,0,14" Visibility="Collapsed">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE8C7;" FontFamily="Segoe MDL2 Assets" FontSize="26" Foreground="{StaticResource TagitPrimary}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="No coupons yet" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" HorizontalAlignment="Center" Margin="0,9,0,0"/>
+                    <TextBlock Text="Create a coupon to offer discounts to your customers." FontSize="12" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
             <ItemsControl x:Name="CouponGrid">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -33,7 +31,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="{StaticResource TextWhite}" CornerRadius="12" BorderBrush="{StaticResource TagitBorder}" BorderThickness="1" Width="260" Margin="0,0,16,16" Padding="16">
+                        <Border Background="{DynamicResource CardSurface}" CornerRadius="12" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" Width="260" Margin="0,0,16,16" Padding="16">
                             <StackPanel>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -43,11 +41,11 @@
                                     <TextBlock Grid.Column="0" Text="{Binding code}" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TagitPrimary}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding status}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TagitAccent}"/>
                                 </Grid>
-                                <TextBlock Text="{Binding description}" FontSize="12" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap" Margin="0,8,0,12"/>
-                                <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextDark}">
+                                <TextBlock Text="{Binding description}" FontSize="12" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,8,0,12"/>
+                                <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}">
                                     <Run Text="{Binding discount}"/><Run Text="% OFF"/>
                                 </TextBlock>
-                                <TextBlock FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,4,0,0">
+                                <TextBlock FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,4,0,0">
                                     <Run Text="{Binding uses}"/><Run Text=" uses"/>
                                 </TextBlock>
                             </StackPanel>
@@ -56,7 +54,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <TextBlock x:Name="TxtStatus" Text="Ready" FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,16,0,0"/>
+            <TextBlock x:Name="TxtStatus" Text="Ready" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,16,0,0"/>
 
         </StackPanel>
     </ScrollViewer>

@@ -7,41 +7,166 @@
         <!-- Tagit Brand Palette -->
         <SolidColorBrush x:Key="TagitPrimary" Color="#FF5A79"/>
         <SolidColorBrush x:Key="TagitPrimaryDark" Color="#F03A70"/>
-        <SolidColorBrush x:Key="TagitAccent" Color="#00E2C8"/>
+        <SolidColorBrush x:Key="TagitAccent" Color="#FF5A79"/>
         <SolidColorBrush x:Key="TagitWarmCoral" Color="#FF6F61"/>
-        <SolidColorBrush x:Key="TagitDark" Color="#0F172A"/>
-        <SolidColorBrush x:Key="TagitMuted" Color="#64748B"/>
-        <SolidColorBrush x:Key="TagitSurface" Color="#E2E6E9"/>
-        <SolidColorBrush x:Key="TagitBorder" Color="#D9DDDF"/>
+        <SolidColorBrush x:Key="TagitDark" Color="#1C1C1C"/>
+        <SolidColorBrush x:Key="TagitMuted" Color="#707070"/>
+        <SolidColorBrush x:Key="TagitSurface" Color="#F1F1F0"/>
+        <SolidColorBrush x:Key="TagitBorder" Color="#E1E1E0"/>
         <SolidColorBrush x:Key="TagitBackground" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="TagitOnPrimary" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="CardSurface" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="InputSurface" Color="#F7F7F6"/>
+        <SolidColorBrush x:Key="DataGridAltSurface" Color="#F8F8F7"/>
+        <SolidColorBrush x:Key="TableHeaderSurface" Color="#F7F7F6"/>
+        <SolidColorBrush x:Key="WindowControlHover" Color="#EAEAE9"/>
+        <SolidColorBrush x:Key="WindowCloseHover" Color="#E7E7E6"/>
+        <SolidColorBrush x:Key="ErrorText" Color="#A63D32"/>
 
         <LinearGradientBrush x:Key="TagitPrimaryGradient" StartPoint="0,0" EndPoint="1,0">
             <GradientStop Color="#FF5A79" Offset="0"/>
             <GradientStop Color="#F03A70" Offset="1"/>
         </LinearGradientBrush>
 
-        <SolidColorBrush x:Key="SidebarBackground" Color="#0F172A"/>
-        <SolidColorBrush x:Key="SidebarItemHover" Color="#1E293B"/>
-        <SolidColorBrush x:Key="SidebarItemActive" Color="#FF5A79"/>
+        <!-- Sidebar design tokens -->
+        <SolidColorBrush x:Key="SidebarBackground" Color="#FBFBFA"/>
+        <SolidColorBrush x:Key="SidebarItemHover" Color="#F1F1F0"/>
+        <SolidColorBrush x:Key="SidebarItemActive" Color="#FFF0F3"/>
+        <SolidColorBrush x:Key="SidebarItemActiveBorder" Color="#FF5A79"/>
+        <SolidColorBrush x:Key="SidebarTextSecondary" Color="#777777"/>
+        <SolidColorBrush x:Key="SidebarSurface" Color="#F3F3F2"/>
 
-        <SolidColorBrush x:Key="WindowBackground" Color="#F4F5F7"/>
-        <SolidColorBrush x:Key="TitleBarBackground" Color="#0F172A"/>
+        <sys:Double x:Key="SidebarWidthExpanded" xmlns:sys="clr-namespace:System;assembly=mscorlib">268</sys:Double>
+        <sys:Double x:Key="SidebarWidthCollapsed" xmlns:sys="clr-namespace:System;assembly=mscorlib">76</sys:Double>
+        <sys:Double x:Key="SidebarItemHeight" xmlns:sys="clr-namespace:System;assembly=mscorlib">40</sys:Double>
+        <sys:Double x:Key="SidebarSectionSpacing" xmlns:sys="clr-namespace:System;assembly=mscorlib">24</sys:Double>
+        <sys:Double x:Key="SidebarIconSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">18</sys:Double>
 
-        <SolidColorBrush x:Key="TextDark" Color="#0F172A"/>
-        <SolidColorBrush x:Key="TextMuted" Color="#64748B"/>
+        <Geometry x:Key="SidebarIconOverview">M3,3 H10 V10 H3 Z M14,3 H21 V10 H14 Z M3,14 H10 V21 H3 Z M14,14 H21 V21 H14 Z</Geometry>
+        <Geometry x:Key="SidebarIconProducts">M3,7 L12,2 L21,7 L12,12 Z M3,7 V17 L12,22 L21,17 V7 M12,12 V22</Geometry>
+        <Geometry x:Key="SidebarIconSales">M4,3 V21 H21 M8,16 V12 H11 V16 Z M14,16 V8 H17 V16 Z M8,9 L12,6 L15,7 L20,3</Geometry>
+        <Geometry x:Key="SidebarIconDebt">M7,3 H17 L20,6 V21 H4 V3 Z M7,3 V8 H17 V3 M7,12 H16 M7,16 H13 M18,12 V17 M16,14 H20</Geometry>
+        <Geometry x:Key="SidebarIconReviews">M12,2.5 L15,8.5 L21.5,9.5 L16.8,14 L17.9,20.5 L12,17.4 L6.1,20.5 L7.2,14 L2.5,9.5 L9,8.5 Z</Geometry>
+        <Geometry x:Key="SidebarIconInsights">M4,20 V12 H8 V20 Z M10,20 V6 H14 V20 Z M16,20 V3 H20 V20 Z M2,21 H22</Geometry>
+        <Geometry x:Key="SidebarIconFlash">M13.5,2.5 L5,13 H11 L9.5,21.5 L19,10.5 H13 Z</Geometry>
+        <Geometry x:Key="SidebarIconCoupons">M3,5 H21 V9 C18,9 18,15 21,15 V19 H3 V15 C6,15 6,9 3,9 Z M12,7 V9 M12,11 V13 M12,15 V17</Geometry>
+        <Geometry x:Key="SidebarIconReels">M3,5 H21 V19 H3 Z M9,2 L6,5 M16,2 L13,5 M10,9 L15,12 L10,15 Z</Geometry>
+        <Geometry x:Key="SidebarIconStoreSettings">M3,10 L5,4 H19 L21,10 M4,10 V20 H20 V10 M3,10 H21 M8,10 V13 M12,10 V13 M16,10 V13 M9,20 V15 H15 V20</Geometry>
+        <Geometry x:Key="SidebarIconStorefront">M3,3 H21 V21 H3 Z M3,8 H21 M8,8 V21 M8,13 H18 V18 H8</Geometry>
+        <Geometry x:Key="SidebarIconExit">M10,3 H4 V21 H10 M13,8 L18,12 L13,16 M8,12 H18</Geometry>
+        <Geometry x:Key="InputIconField">M4,5 H20 V19 H4 Z M7,9 H17 M7,13 H17 M7,16 H12</Geometry>
+        <Geometry x:Key="InputIconSearch">M10,3 A7,7 0 1 0 10,17 A7,7 0 1 0 10,3 M15,15 L21,21</Geometry>
+        <Geometry x:Key="InputIconEmail">M3,5 H21 V19 H3 Z M3,6 L12,13 L21,6</Geometry>
+        <Geometry x:Key="InputIconPerson">M12,12 A4,4 0 1 0 12,4 A4,4 0 1 0 12,12 M4,21 C4,17 7,15 12,15 C17,15 20,17 20,21</Geometry>
+        <Geometry x:Key="InputIconPhone">M7,3 H17 V21 H7 Z M10,18 H14</Geometry>
+        <Geometry x:Key="InputIconNumber">M8,3 L5,21 M19,3 L16,21 M3,9 H21 M2,15 H20</Geometry>
+        <Geometry x:Key="InputIconDate">M4,5 H20 V21 H4 Z M8,3 V7 M16,3 V7 M4,10 H20</Geometry>
+        <Geometry x:Key="InputIconImage">M3,4 H21 V20 H3 Z M5,17 L10,11 L14,15 L17,12 L21,17 M8,8 H8.1</Geometry>
+        <Geometry x:Key="InputIconLink">M10,13 L14,9 M8,15 L6,17 A4,4 0 0 1 0,11 L5,6 A4,4 0 0 1 11,6 M13,9 L15,7 A4,4 0 0 1 21,13 L16,18 A4,4 0 0 1 10,18</Geometry>
+        <Geometry x:Key="InputIconLock">M5,10 H19 V21 H5 Z M8,10 V7 A4,4 0 0 1 16,7 V10 M12,14 V17</Geometry>
+        <Geometry x:Key="InputIconEye">M2,12 C5,6 9,4 12,4 C15,4 19,6 22,12 C19,18 15,20 12,20 C9,20 5,18 2,12 Z M12,15 A3,3 0 1 0 12,9 A3,3 0 1 0 12,15</Geometry>
+        <Geometry x:Key="InputIconEyeOff">M3,3 L21,21 M10,10 A3,3 0 0 0 14,14 M9,5 C10,4 11,4 12,4 C15,4 19,6 22,12 C21,14 20,15 18,17 M6,6 C4,7 3,9 2,12 C5,18 9,20 12,20 C14,20 16,19 18,17</Geometry>
+
+        <SolidColorBrush x:Key="WindowBackground" Color="#F1F1F0"/>
+        <SolidColorBrush x:Key="TitleBarBackground" Color="#FBFBFA"/>
+
+        <SolidColorBrush x:Key="TextDark" Color="#202020"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#727272"/>
         <SolidColorBrush x:Key="TextWhite" Color="#FFFFFF"/>
 
-        <SolidColorBrush x:Key="IconColor" Color="#64748B"/>
-        <SolidColorBrush x:Key="IconActive" Color="#FF5A79"/>
+        <SolidColorBrush x:Key="IconColor" Color="#6C6C6C"/>
+        <SolidColorBrush x:Key="IconActive" Color="#202020"/>
 
+        <!-- Semantic colors -->
+        <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#F59E0B"/>
+        <SolidColorBrush x:Key="ErrorColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="InfoColor" Color="#3B82F6"/>
+
+        <!-- Typography -->
+        <FontFamily x:Key="FontHeading">Segoe UI</FontFamily>
+        <FontFamily x:Key="FontBody">Segoe UI</FontFamily>
+
+        <sys:Double x:Key="TextSizeSmall" xmlns:sys="clr-namespace:System;assembly=mscorlib">11</sys:Double>
+        <sys:Double x:Key="TextSizeBase" xmlns:sys="clr-namespace:System;assembly=mscorlib">13</sys:Double>
+        <sys:Double x:Key="TextSizeLarge" xmlns:sys="clr-namespace:System;assembly=mscorlib">16</sys:Double>
+        <sys:Double x:Key="TextSizeXLarge" xmlns:sys="clr-namespace:System;assembly=mscorlib">20</sys:Double>
+        <sys:Double x:Key="TextSizeHeading" xmlns:sys="clr-namespace:System;assembly=mscorlib">28</sys:Double>
+
+        <!-- Spacing -->
+        <sys:Double x:Key="SpaceXs" xmlns:sys="clr-namespace:System;assembly=mscorlib">4</sys:Double>
+        <sys:Double x:Key="SpaceSm" xmlns:sys="clr-namespace:System;assembly=mscorlib">8</sys:Double>
+        <sys:Double x:Key="SpaceMd" xmlns:sys="clr-namespace:System;assembly=mscorlib">16</sys:Double>
+        <sys:Double x:Key="SpaceLg" xmlns:sys="clr-namespace:System;assembly=mscorlib">24</sys:Double>
+        <sys:Double x:Key="SpaceXl" xmlns:sys="clr-namespace:System;assembly=mscorlib">32</sys:Double>
+
+        <!-- Sidebar -->
         <Style x:Key="SidebarButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Padding" Value="16,12"/>
+            <Setter Property="Foreground" Value="{DynamicResource SidebarTextSecondary}"/>
+            <Setter Property="FontSize" Value="12.5"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Margin" Value="0,1"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="{StaticResource SidebarItemHeight}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="NavSurface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="9">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="28"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{TemplateBinding Tag}" Width="{StaticResource SidebarIconSize}" Height="{StaticResource SidebarIconSize}" Stretch="Uniform" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.55" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <ContentPresenter Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="7,0,0,0"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="NavSurface" Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
+                                <Setter TargetName="NavSurface" Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SidebarItemHover}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SidebarItemActive}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SidebarButtonActive" TargetType="Button" BasedOn="{StaticResource SidebarButton}">
+            <Setter Property="Background" Value="{DynamicResource SidebarItemActive}"/>
+            <Setter Property="Foreground" Value="{StaticResource TagitPrimaryDark}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="SidebarCollapseButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="{StaticResource SidebarItemHeight}"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontFamily" Value="Segoe UI Light"/>
+            <Setter Property="ToolTip" Value="Collapse navigation"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -57,32 +182,25 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource SidebarItemHover}"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{StaticResource SidebarItemActive}"/>
+                    <Setter Property="Background" Value="{DynamicResource SidebarItemHover}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="SidebarButtonActive" TargetType="Button" BasedOn="{StaticResource SidebarButton}">
-            <Setter Property="Background" Value="{StaticResource SidebarItemActive}"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
-        </Style>
-
+        <!-- Buttons -->
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource TagitPrimaryGradient}"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
+            <Setter Property="Foreground" Value="#241018"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Padding" Value="16,10"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="8"
+                                CornerRadius="10"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
                             <ContentPresenter HorizontalAlignment="Center"
@@ -96,17 +214,24 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Opacity" Value="0.9"/>
                 </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="OutlineButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TagitAccent}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Padding" Value="12,8"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -114,7 +239,7 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6">
+                                CornerRadius="10">
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
                                               Margin="{TemplateBinding Padding}"/>
@@ -124,16 +249,70 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource TagitAccent}"/>
-                    <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+                    <Setter Property="Background" Value="{DynamicResource SidebarItemActive}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource TagitPrimary}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="GhostButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource TagitPrimary}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="IconButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource IconColor}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource TagitSurface}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Window controls -->
         <Style x:Key="WindowControlButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Width" Value="46"/>
             <Setter Property="Height" Value="32"/>
@@ -152,7 +331,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#24534A"/>
+                    <Setter Property="Background" Value="{DynamicResource WindowControlHover}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -160,58 +339,167 @@
         <Style x:Key="WindowCloseButton" TargetType="Button" BasedOn="{StaticResource WindowControlButton}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#EF4444"/>
+                    <Setter Property="Background" Value="{DynamicResource WindowCloseHover}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
+        <!-- Cards -->
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource CardSurface}"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20"/>
+        </Style>
+
+        <Style x:Key="StatCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+
         <Style x:Key="ProductCard" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource TextWhite}"/>
+            <Setter Property="Background" Value="{DynamicResource CardSurface}"/>
             <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TagitBorder}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
+        <!-- Text -->
         <Style x:Key="SectionHeader" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontFamily" Value="{StaticResource FontBody}"/>
+            <Setter Property="FontSize" Value="{StaticResource TextSizeLarge}"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
-            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <Style x:Key="PageTitle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource FontHeading}"/>
+            <Setter Property="FontSize" Value="{StaticResource TextSizeHeading}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+        </Style>
+
+        <Style x:Key="PageSubtitle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource FontBody}"/>
+            <Setter Property="FontSize" Value="{StaticResource TextSizeBase}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+            <Setter Property="Margin" Value="0,4,0,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
         <Style x:Key="FilterLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+            <Setter Property="FontFamily" Value="{StaticResource FontBody}"/>
+            <Setter Property="FontSize" Value="{StaticResource TextSizeSmall}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="FontWeight" Value="Medium"/>
         </Style>
 
-        <Style x:Key="LoginCard" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource TextWhite}"/>
-            <Setter Property="CornerRadius" Value="16"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TagitBorder}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="32"/>
-            <Setter Property="Width" Value="400"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Style x:Key="Badge" TargetType="Border">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="Background" Value="{DynamicResource TagitSurface}"/>
         </Style>
 
+        <Style x:Key="BadgeText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource FontBody}"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+        </Style>
+
+        <!-- Inputs -->
         <Style x:Key="LoginInput" TargetType="TextBox">
             <Setter Property="Height" Value="44"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
-            <Setter Property="Background" Value="{StaticResource TagitSurface}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TagitBorder}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource TagitPrimary}"/>
+            <Setter Property="Background" Value="{DynamicResource InputSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,0,12,0"/>
+            <Setter Property="Padding" Value="38,0,12,0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}"
+                        <Border x:Name="InputBorder" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8">
-                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="12,0,12,0"/>
+                                CornerRadius="10">
+                            <Grid ClipToBounds="True">
+                                <Path x:Name="InputIcon" Data="{StaticResource InputIconField}" Width="15" Height="15" Stretch="Uniform" Stroke="{DynamicResource TextMuted}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="13,0,0,0" IsHitTestVisible="False"/>
+                                <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+                                <TextBlock x:Name="InputPlaceholder" Text="{TemplateBinding Tag}" Foreground="{DynamicResource TextMuted}" FontSize="{TemplateBinding FontSize}" Margin="38,0,12,0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" TextTrimming="CharacterEllipsis" IsHitTestVisible="False" Visibility="Collapsed"/>
+                            </Grid>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                <Setter TargetName="InputPlaceholder" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                                <Setter TargetName="InputPlaceholder" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="InputBorder" Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
+                                <Setter TargetName="InputBorder" Property="BorderThickness" Value="1.5"/>
+                                <Setter TargetName="InputIcon" Property="Stroke" Value="{DynamicResource TagitPrimary}"/>
+                                <Setter TargetName="InputPlaceholder" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="AcceptsReturn" Value="True">
+                                <Setter TargetName="InputIcon" Property="VerticalAlignment" Value="Top"/>
+                                <Setter TargetName="InputIcon" Property="Margin" Value="13,12,0,0"/>
+                                <Setter TargetName="InputPlaceholder" Property="VerticalAlignment" Value="Top"/>
+                                <Setter TargetName="InputPlaceholder" Property="Margin" Value="38,10,12,0"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="you@store.com">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconEmail}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Search name or SKU">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconSearch}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Search products">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconSearch}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Your full name">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPerson}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Customer name">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPerson}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="e.g. John Doe">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPerson}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Phone number">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconPhone}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="0.00">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconNumber}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="2026-12-31">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconDate}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="2026-11-07T10:00:00">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconDate}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="2026-11-08T10:00:00">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconDate}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Paste image URL or browse...">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconImage}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Paste hero image URL or browse...">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconImage}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Paste secondary image URL or browse...">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconImage}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="contact@yourstore.com">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconEmail}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Value="Enter a URL">
+                                <Setter TargetName="InputIcon" Property="Data" Value="{StaticResource InputIconLink}"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -220,23 +508,134 @@
         <Style x:Key="LoginPassword" TargetType="PasswordBox">
             <Setter Property="Height" Value="44"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
-            <Setter Property="Background" Value="{StaticResource TagitSurface}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TagitBorder}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Background" Value="{DynamicResource InputSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,0,12,0"/>
+            <Setter Property="Padding" Value="38,0,12,0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
-                        <Border Background="{TemplateBinding Background}"
+                        <Border x:Name="InputBorder" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8">
-                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="12,0,12,0"/>
+                                CornerRadius="10">
+                            <Grid ClipToBounds="True">
+                                <Path x:Name="InputIcon" Data="{StaticResource InputIconLock}" Width="15" Height="15" Stretch="Uniform" Stroke="{DynamicResource TextMuted}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="13,0,0,0" IsHitTestVisible="False"/>
+                                <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                                <TextBlock x:Name="InputPlaceholder" Text="{TemplateBinding Tag}" Foreground="{DynamicResource TextMuted}" FontSize="{TemplateBinding FontSize}" Margin="38,0,12,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                            </Grid>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="InputBorder" Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
+                                <Setter TargetName="InputBorder" Property="BorderThickness" Value="1.5"/>
+                                <Setter TargetName="InputIcon" Property="Stroke" Value="{DynamicResource TagitPrimary}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="InputAdornmentButton" TargetType="Button">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="ToolTip" Value="Show password"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SidebarItemHover}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Background" Value="{DynamicResource InputSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Setter Property="Padding" Value="8,4"/>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Background" Value="{DynamicResource CardSurface}"/>
+            <Setter Property="Padding" Value="8,6"/>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource CardSurface}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Setter Property="RowBackground" Value="{DynamicResource CardSurface}"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource DataGridAltSurface}"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource TagitBorder}"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource TableHeaderSurface}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SidebarItemActive}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SidebarItemActive}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Login card -->
+        <Style x:Key="LoginCard" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource CardSurface}"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="36"/>
+            <Setter Property="Width" Value="420"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Empty state -->
+        <Style x:Key="EmptyState" TargetType="StackPanel">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Drop shadow -->
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="20" ShadowDepth="0" Opacity="0.08" Direction="270"/>
+        <DropShadowEffect x:Key="ElevatedShadow" BlurRadius="30" ShadowDepth="0" Opacity="0.12" Direction="270"/>
     </Application.Resources>
 </Application>

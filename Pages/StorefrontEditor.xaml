@@ -1,0 +1,511 @@
+﻿<Page x:Class="StorefrontEditor"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{DynamicResource WindowBackground}"
+      SizeChanged="Page_SizeChanged">
+    <Page.Resources>
+        <Style x:Key="EditorLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,14,0,7"/>
+        </Style>
+        <Style x:Key="EditorInputBox" TargetType="TextBox">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Background" Value="{DynamicResource InputSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="11,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource TagitPrimary}"/>
+            <Setter Property="SelectionBrush" Value="#88FF5A79"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="EditorButton" TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Background" Value="{DynamicResource CardSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="SaveButton" TargetType="Button" BasedOn="{StaticResource EditorButton}">
+            <Setter Property="Foreground" Value="#241018"/>
+            <Setter Property="Background" Value="{DynamicResource TagitPrimary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
+            <Setter Property="Padding" Value="20,9"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        <Style x:Key="TemplateCard" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Background" Value="{DynamicResource CardSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0,0,10,10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="CardBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                <TextBlock x:Name="SelectedMark" Text="&#x2713;" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TagitPrimary}" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource TagitPrimary}"/>
+                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="2"/>
+                                <Setter TargetName="SelectedMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CardBorder" Property="Background" Value="{DynamicResource SidebarItemHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="CardBorder" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ViewportButton" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="11,8"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="ViewportBorder" Background="{TemplateBinding Background}" CornerRadius="9" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="ViewportBorder" Property="Background" Value="{DynamicResource TagitPrimary}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ViewportBorder" Property="Background" Value="{DynamicResource SidebarItemHover}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ColorSwatchButton" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="SwatchRing" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="20" Padding="4">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="16"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="SwatchRing" Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource TextDark}"/>
+            <Setter Property="Background" Value="{DynamicResource CardSurface}"/>
+            <Setter Property="Padding" Value="10,8"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="18,8,18,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="&#x2190;" Style="{StaticResource EditorButton}" Width="44" Height="44" Padding="0" FontSize="22" Click="BtnBack_Click" ToolTip="Go back"/>
+            <TextBlock Grid.Column="1" Text="Storefront" Foreground="{DynamicResource TextDark}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="BtnSaveTheme" Grid.Column="2" Content="Save" Style="{StaticResource SaveButton}" MinWidth="72" Height="42" Click="BtnSaveTheme_Click"/>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid x:Name="EditorColumns" Margin="4,12,4,0" SizeChanged="EditorColumns_SizeChanged">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="PreviewColumn" Width="1.08*"/>
+                    <ColumnDefinition x:Name="SettingsColumn" Width="0.92*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel x:Name="PreviewColumnPanel" Grid.Row="0" Grid.Column="0" Margin="0,0,20,0">
+                    <TextBlock Text="Create your storefront" Foreground="{DynamicResource TextDark}" FontSize="28" FontWeight="ExtraBold" Margin="0,16,0,8"/>
+                    <TextBlock Text="Choose a look, add your store details, and make your shop feel like yours." Foreground="{DynamicResource TextMuted}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,26"/>
+
+                    <TextBlock Text="Live storefront preview" Foreground="{DynamicResource TextDark}" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock Text="See your selected template with your current store details." Foreground="{DynamicResource TextMuted}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,14"/>
+
+                    <Border Background="{DynamicResource CardSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" CornerRadius="12" Padding="7" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton x:Name="ViewportMobile" GroupName="PreviewViewport" Tag="mobile" Style="{StaticResource ViewportButton}" Checked="PreviewViewport_Checked">
+                                <TextBlock Text="&#x25AF;  Mobile"/>
+                            </RadioButton>
+                            <RadioButton x:Name="ViewportTablet" GroupName="PreviewViewport" Tag="tablet" Style="{StaticResource ViewportButton}" Checked="PreviewViewport_Checked">
+                                <TextBlock Text="&#x25AF;  Tablet"/>
+                            </RadioButton>
+                            <RadioButton x:Name="ViewportDesktop" GroupName="PreviewViewport" Tag="desktop" IsChecked="True" Style="{StaticResource ViewportButton}" Checked="PreviewViewport_Checked">
+                                <TextBlock Text="&#x25AD;  Desktop"/>
+                            </RadioButton>
+                        </StackPanel>
+                    </Border>
+
+                    <Border x:Name="PreviewBrowser" Margin="0,0,0,0" CornerRadius="18" BorderBrush="#E7EAF0" BorderThickness="1" Background="#F8FAFC" HorizontalAlignment="Stretch" ClipToBounds="True">
+                        <StackPanel>
+                            <Border Height="28" Background="#E7E5E4" Padding="12,0">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Ellipse Width="8" Height="8" Fill="#B6B1AE" Margin="0,0,5,0"/>
+                                    <Ellipse Width="8" Height="8" Fill="#B6B1AE" Margin="0,0,5,0"/>
+                                    <Ellipse Width="8" Height="8" Fill="#B6B1AE"/>
+                                </StackPanel>
+                            </Border>
+                            <Border x:Name="PreviewStorePage" Background="#F8FAFC" Padding="12,10,12,14">
+                                <StackPanel>
+                                    <Grid x:Name="PreviewStoreHeader" Margin="0,0,0,9">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Grid Width="26" Height="26" Margin="0,0,7,0">
+                                                <Border x:Name="PreviewAvatarFallback" Background="{DynamicResource TagitPrimary}" CornerRadius="13">
+                                                    <TextBlock x:Name="PreviewAvatarInitial" Text="T" Foreground="White" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <Image x:Name="PreviewAvatarImage" Stretch="UniformToFill" Visibility="Collapsed" ImageFailed="PreviewImage_Failed"/>
+                                            </Grid>
+                                            <TextBlock x:Name="PreviewStoreName" Text="tagit Demo Store" Foreground="#101828" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <StackPanel x:Name="PreviewNavPanel" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="HOME" Foreground="#263144" FontSize="7" Margin="0,0,8,0"/>
+                                            <TextBlock Text="SHOP" Foreground="#263144" FontSize="7" Margin="0,0,8,0"/>
+                                            <TextBlock Text="ABOUT" Foreground="#263144" FontSize="7" Margin="0,0,8,0"/>
+                                            <TextBlock Text="&#x25A1;" Foreground="#263144" FontSize="10" Margin="0,0,8,0"/>
+                                            <TextBlock Text="Cart  Sign in" Foreground="#263144" FontSize="7"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Border x:Name="PreviewHeaderDivider" Height="1" Background="#E5E7EB" Margin="0,0,0,8"/>
+                                    <Border x:Name="PreviewSearchShell" Background="#FFFFFF" BorderBrush="#D9DEE7" BorderThickness="1" CornerRadius="14" Height="24" Padding="8,2" Margin="0,0,0,9">
+                                            <Grid>
+                                                <TextBlock Text="Search this store" Foreground="#8993A3" FontSize="8" VerticalAlignment="Center"/>
+                                                <Border x:Name="PreviewSearchButton" Background="{DynamicResource TagitPrimary}" CornerRadius="10" Padding="9,2" HorizontalAlignment="Right">
+                                                    <TextBlock Text="Search" Foreground="White" FontSize="7" FontWeight="Bold"/>
+                                                </Border>
+                                            </Grid>
+                                    </Border>
+
+                                    <ContentControl x:Name="PreviewHeroHost" Margin="0,0,0,12"/>
+                                    <Grid x:Name="PreviewHero" Height="176" Margin="0,0,0,10" Visibility="Collapsed">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="1.16*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border x:Name="PreviewCoverPanel1" Grid.Column="0" Background="#F6DCE3" Margin="0,0,5,0">
+                                            <Grid>
+                                                <Image x:Name="PreviewCoverImage1" Stretch="UniformToFill" Visibility="Collapsed" ImageFailed="PreviewImage_Failed"/>
+                                                <Border x:Name="PreviewCoverGraphic1" Background="#22FF5A79" Margin="10"/>
+                                            </Grid>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="3,0">
+                                            <TextBlock Text="THE COLLECTION" Foreground="#1F2937" FontSize="7" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,7"/>
+                                            <TextBlock x:Name="PreviewHeroStoreName" Text="tagit Demo Store" Foreground="#101828" FontSize="16" FontWeight="ExtraBold" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                            <TextBlock x:Name="PreviewDescription" Text="A neighborhood store serving everyday essentials." Foreground="#667085" FontSize="8" TextAlignment="Center" TextWrapping="Wrap" Margin="0,5,0,8"/>
+                                            <Border x:Name="PreviewBrowseButton" Background="{DynamicResource TagitPrimary}" Padding="10,6" HorizontalAlignment="Center">
+                                                <TextBlock Text="Browse" Foreground="White" FontSize="8" FontWeight="Bold"/>
+                                            </Border>
+                                        </StackPanel>
+                                        <Border x:Name="PreviewCoverPanel2" Grid.Column="2" Background="#F8E8EC" Margin="5,0,0,0">
+                                            <Grid>
+                                                <Image x:Name="PreviewCoverImage2" Stretch="UniformToFill" Visibility="Collapsed" ImageFailed="PreviewImage_Failed"/>
+                                                <Border x:Name="PreviewCoverGraphic2" Background="#18FF5A79" Margin="10"/>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,10" Visibility="Collapsed">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="&#x2022; CURATED FOR YOU" Foreground="#475467" FontSize="6" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        <TextBlock x:Name="PreviewLayoutLabel" Grid.Column="1" Text="CLASSIC GRID LAYOUT" Foreground="#475467" FontSize="6" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        <TextBlock x:Name="PreviewProductCount" Grid.Column="2" Text="0 PRODUCTS" Foreground="#475467" FontSize="6" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                    <Border Height="1" Background="#DDE2E9" Margin="0,0,0,8" Visibility="Collapsed"/>
+                                    <TextBlock Text="THE COLLECTION" Foreground="{DynamicResource TagitPrimary}" FontSize="8" FontWeight="Bold" Margin="0,0,0,8" Visibility="Collapsed"/>
+                                    <ItemsControl x:Name="PreviewProductItems" Visibility="Collapsed">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Columns="3"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="0,0,8,0">
+                                                    <StackPanel>
+                                                        <Grid Height="66" Background="#EEF1F5" ClipToBounds="True">
+                                                            <TextBlock Text="TAGIT" Foreground="#CBD1DA" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <Image Source="{Binding thumbnail}" Stretch="UniformToFill"/>
+                                                        </Grid>
+                                                        <TextBlock Text="{Binding title}" Foreground="#263144" FontSize="7" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Margin="0,5,0,2"/>
+                                                        <TextBlock Text="{Binding price, StringFormat={}{0:C}}" Foreground="#101828" FontSize="7" FontWeight="Bold"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock x:Name="PreviewEmptyProducts" Text="Your products will appear here." Foreground="#667085" FontSize="9" TextAlignment="Center" Margin="0,6,0,0" Visibility="Collapsed"/>
+                                    <ContentControl x:Name="PreviewBelowHeroHost"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="A preview of your public store, using your saved details and current products." Foreground="{DynamicResource TextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                </StackPanel>
+
+                <StackPanel x:Name="SettingsColumnPanel" Grid.Row="0" Grid.Column="1" Margin="0,0,0,0">
+                    <Border Background="{DynamicResource CardSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" CornerRadius="16" Padding="16" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock x:Name="TxtStorefrontStatus" Text="Storefront is inactive" Foreground="{DynamicResource TextDark}" FontSize="14" FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtStorefrontStatusDescription" Text="Your public store page is hidden from shoppers." Foreground="{DynamicResource TextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,5,12,0"/>
+                            </StackPanel>
+                            <CheckBox x:Name="ChkStorefrontEnabled" Grid.Column="1" VerticalAlignment="Center" IsChecked="False" Checked="StorefrontEnabled_Changed" Unchecked="StorefrontEnabled_Changed" AutomationProperties.Name="Activate storefront">
+                                <CheckBox.Template>
+                                    <ControlTemplate TargetType="CheckBox">
+                                        <Grid Width="44" Height="26">
+                                            <Border x:Name="SwitchTrack" Background="{DynamicResource TagitBorder}" CornerRadius="13"/>
+                                            <Ellipse x:Name="SwitchThumb" Width="20" Height="20" Fill="#FFFFFF" HorizontalAlignment="Left" Margin="3,0,0,0"/>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="SwitchTrack" Property="Background" Value="{DynamicResource TagitPrimary}"/>
+                                                <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Right"/>
+                                                <Setter TargetName="SwitchThumb" Property="Margin" Value="0,0,3,0"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="SwitchTrack" Property="Opacity" Value="0.55"/>
+                                                <Setter TargetName="SwitchThumb" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </CheckBox.Template>
+                            </CheckBox>
+                        </Grid>
+                    </Border>
+                    <TextBlock x:Name="TxtFeedback" Foreground="{DynamicResource TextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,18"/>
+
+                    <TextBlock Text="Choose a template" Foreground="{DynamicResource TextDark}" FontSize="16" FontWeight="Bold"/>
+                    <TextBlock Text="Pick a visual style for your public store. Choose its accent color separately below." Foreground="{DynamicResource TextMuted}" FontSize="12" TextWrapping="Wrap" Margin="0,5,0,14"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <RadioButton x:Name="TemplateChicWave" Grid.Row="0" Grid.Column="0" Tag="chicwave" GroupName="StorefrontTheme" Style="{StaticResource TemplateCard}" Checked="TemplateCard_Checked">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Width="38" Height="38" Background="#E85B55" CornerRadius="9" VerticalAlignment="Center">
+                                    <StackPanel Margin="6,7">
+                                        <Border Height="5" Background="#FFF4EC" CornerRadius="3"/>
+                                        <Border Height="13" Background="#FFF4EC" CornerRadius="5" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,4,0">
+                                    <TextBlock Text="ChicWave" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="Bold"/>
+                                    <TextBlock Text="Warm, colorful, and welcoming" Foreground="{DynamicResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton x:Name="TemplateFashionia" Grid.Row="0" Grid.Column="1" Tag="fashionia" GroupName="StorefrontTheme" Style="{StaticResource TemplateCard}" Checked="TemplateCard_Checked">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Width="38" Height="38" Background="#5B4638" CornerRadius="9" VerticalAlignment="Center">
+                                    <StackPanel Margin="6,7"><Border Height="5" Background="#F4EEE7" CornerRadius="3"/><Border Height="13" Background="#F4EEE7" CornerRadius="5" Margin="0,4,0,0"/></StackPanel>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,4,0"><TextBlock Text="FashioNia" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="Bold"/><TextBlock Text="A bold, editorial boutique" Foreground="{DynamicResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton x:Name="TemplateMinimal" Grid.Row="1" Grid.Column="0" Tag="minimal" GroupName="StorefrontTheme" Style="{StaticResource TemplateCard}" Checked="TemplateCard_Checked">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Width="38" Height="38" Background="#334155" CornerRadius="9" VerticalAlignment="Center">
+                                    <StackPanel Margin="6,7"><Border Height="5" Background="#F1F5F9" CornerRadius="3"/><Border Height="13" Background="#F1F5F9" CornerRadius="5" Margin="0,4,0,0"/></StackPanel>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,4,0"><TextBlock Text="Modern Minimal" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="Bold"/><TextBlock Text="Clean lines and a calm palette" Foreground="{DynamicResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton x:Name="TemplateBotanical" Grid.Row="1" Grid.Column="1" Tag="botanical" GroupName="StorefrontTheme" Style="{StaticResource TemplateCard}" Checked="TemplateCard_Checked">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Width="38" Height="38" Background="#527A54" CornerRadius="9" VerticalAlignment="Center">
+                                    <StackPanel Margin="6,7"><Border Height="5" Background="#F3F7EF" CornerRadius="3"/><Border Height="13" Background="#F3F7EF" CornerRadius="5" Margin="0,4,0,0"/></StackPanel>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,4,0"><TextBlock Text="Botanical" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="Bold"/><TextBlock Text="Natural greens and an organic feel" Foreground="{DynamicResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton x:Name="TemplateLuxe" Grid.Row="2" Grid.Column="0" Tag="luxe" GroupName="StorefrontTheme" Style="{StaticResource TemplateCard}" Checked="TemplateCard_Checked">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Width="38" Height="38" Background="#9A7848" CornerRadius="9" VerticalAlignment="Center">
+                                    <StackPanel Margin="6,7"><Border Height="5" Background="#F7F2E8" CornerRadius="3"/><Border Height="13" Background="#F7F2E8" CornerRadius="5" Margin="0,4,0,0"/></StackPanel>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,4,0"><TextBlock Text="Luxe" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="Bold"/><TextBlock Text="Refined neutrals with boutique details" Foreground="{DynamicResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton x:Name="TemplateClarity" Grid.Row="2" Grid.Column="1" Tag="clarity" GroupName="StorefrontTheme" Style="{StaticResource TemplateCard}" Checked="TemplateCard_Checked">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Width="38" Height="38" Background="#171717" CornerRadius="9" VerticalAlignment="Center">
+                                    <StackPanel Margin="6,7"><Border Height="5" Background="#F5F4F0" CornerRadius="3"/><Border Height="13" Background="#F5F4F0" CornerRadius="5" Margin="0,4,0,0"/></StackPanel>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,4,0"><TextBlock Text="Clarity" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="Bold"/><TextBlock Text="Airy editorial sections, focused feel" Foreground="{DynamicResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton x:Name="TemplateStudioAir" Grid.Row="3" Grid.ColumnSpan="2" Tag="studio-air" GroupName="StorefrontTheme" Style="{StaticResource TemplateCard}" Checked="TemplateCard_Checked" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Width="38" Height="38" Background="#202020" CornerRadius="9" VerticalAlignment="Center">
+                                    <StackPanel Margin="6,7"><Border Height="5" Background="#E8E8E8" CornerRadius="3"/><Border Height="13" Background="#E8E8E8" CornerRadius="5" Margin="0,4,0,0"/></StackPanel>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,4,0"><TextBlock Text="Studio Air" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="Bold"/><TextBlock Text="Monochrome product storytelling for statement collections" Foreground="{DynamicResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                            </Grid>
+                        </RadioButton>
+                    </Grid>
+                    <ComboBox x:Name="CmbTheme" SelectedValuePath="Tag" Visibility="Collapsed">
+                        <ComboBoxItem Content="ChicWave" Tag="chicwave"/>
+                        <ComboBoxItem Content="FashioNia" Tag="fashionia"/>
+                        <ComboBoxItem Content="Modern Minimal" Tag="minimal"/>
+                        <ComboBoxItem Content="Botanical" Tag="botanical"/>
+                        <ComboBoxItem Content="Luxe" Tag="luxe"/>
+                        <ComboBoxItem Content="Clarity" Tag="clarity"/>
+                        <ComboBoxItem Content="Studio Air" Tag="studio-air"/>
+                    </ComboBox>
+
+                    <TextBlock Text="Primary color" Foreground="{DynamicResource TextDark}" FontSize="14" FontWeight="Bold" Margin="0,8,0,4"/>
+                    <TextBlock Text="Used for buttons, links, badges, and highlights. Pick a swatch or enter a custom hex color." Foreground="{DynamicResource TextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                    <WrapPanel Margin="0,0,0,7">
+                        <Button x:Name="AccentSwatch1" Tag="#E85B55" Background="#E85B55" Style="{StaticResource ColorSwatchButton}" Click="AccentSwatch_Click" ToolTip="Coral"/>
+                        <Button x:Name="AccentSwatch2" Tag="#5B4638" Background="#5B4638" Style="{StaticResource ColorSwatchButton}" Click="AccentSwatch_Click" ToolTip="Brown"/>
+                        <Button x:Name="AccentSwatch3" Tag="#334155" Background="#334155" Style="{StaticResource ColorSwatchButton}" Click="AccentSwatch_Click" ToolTip="Slate"/>
+                        <Button x:Name="AccentSwatch4" Tag="#FF5A79" Background="#FF5A79" Style="{StaticResource ColorSwatchButton}" Click="AccentSwatch_Click" ToolTip="Tagit pink"/>
+                        <Button x:Name="AccentSwatch5" Tag="#0F766E" Background="#0F766E" Style="{StaticResource ColorSwatchButton}" Click="AccentSwatch_Click" ToolTip="Teal"/>
+                        <Button x:Name="AccentSwatch6" Tag="#2563EB" Background="#2563EB" Style="{StaticResource ColorSwatchButton}" Click="AccentSwatch_Click" ToolTip="Blue"/>
+                        <Button x:Name="AccentSwatch7" Tag="#7C3AED" Background="#7C3AED" Style="{StaticResource ColorSwatchButton}" Click="AccentSwatch_Click" ToolTip="Violet"/>
+                        <Button x:Name="AccentSwatch8" Tag="#111827" Background="#111827" Style="{StaticResource ColorSwatchButton}" Click="AccentSwatch_Click" ToolTip="Midnight"/>
+                    </WrapPanel>
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                        <TextBlock Text="Custom hex" Foreground="{DynamicResource TextDark}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        <TextBox x:Name="TxtThemeColor" Grid.Column="1" Height="38" Style="{StaticResource EditorInputBox}" MaxLength="7" ToolTip="Enter a six-digit color, such as #FF5A79"/>
+                    </Grid>
+
+                    <TextBlock Text="Store layout" Foreground="{DynamicResource TextDark}" FontSize="14" FontWeight="Bold" Margin="0,16,0,4"/>
+                    <TextBlock Text="Choose how products and your introduction are arranged." Foreground="{DynamicResource TextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                    <ComboBox x:Name="CmbLayout" SelectedValuePath="Tag" Height="40" Foreground="{DynamicResource TextDark}" Background="{DynamicResource InputSurface}" BorderBrush="{DynamicResource TagitBorder}" Padding="8,4" SelectionChanged="PreviewThemeChanged">
+                        <ComboBoxItem Content="Classic Grid" Tag="classic"/>
+                        <ComboBoxItem Content="Catalog" Tag="catalog"/>
+                        <ComboBoxItem Content="Editorial" Tag="editorial"/>
+                        <ComboBoxItem Content="Split" Tag="split"/>
+                        <ComboBoxItem Content="Spotlight" Tag="spotlight"/>
+                        <ComboBoxItem Content="Product First" Tag="product-first"/>
+                        <ComboBoxItem Content="Immersive" Tag="immersive"/>
+                        <ComboBoxItem Content="Gallery" Tag="gallery"/>
+                        <ComboBoxItem Content="Quiet" Tag="quiet"/>
+                        <ComboBoxItem Content="Asymmetric" Tag="asymmetric"/>
+                    </ComboBox>
+
+                    <Expander Header="Store details and links" Foreground="{DynamicResource TextDark}" FontSize="14" FontWeight="Bold" IsExpanded="False" Margin="0,20,0,0">
+                        <Border Background="{DynamicResource CardSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,10,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Store name" Style="{StaticResource EditorLabel}" Margin="0,0,0,7"/>
+                                <TextBox x:Name="TxtStoreName" Height="40" Style="{StaticResource EditorInputBox}" TextChanged="PreviewTextChanged"/>
+                                <TextBlock Text="Contact email" Style="{StaticResource EditorLabel}"/>
+                                <TextBox x:Name="TxtStoreEmail" Height="40" Style="{StaticResource EditorInputBox}"/>
+                                <TextBlock Text="Store description" Style="{StaticResource EditorLabel}"/>
+                                <TextBox x:Name="TxtDescription" Height="74" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}" TextChanged="PreviewTextChanged"/>
+                                <TextBlock Text="Store description (detail page)" Style="{StaticResource EditorLabel}"/>
+                                <TextBox x:Name="TxtStoreDescription" Height="74" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}"/>
+
+                                <TextBlock Text="Images" Foreground="{DynamicResource TextDark}" FontSize="13" FontWeight="Bold" Margin="0,22,0,0"/>
+                                <TextBlock Text="Avatar / logo" Style="{StaticResource EditorLabel}"/>
+                                <DockPanel Margin="0,0,0,8" LastChildFill="True">
+                                    <Button Content="Browse" DockPanel.Dock="Right" Style="{StaticResource EditorButton}" Height="38" Margin="8,0,0,0" Click="BtnBrowseAvatar_Click"/>
+                                    <TextBox x:Name="TxtAvatar" Height="38" Style="{StaticResource EditorInputBox}" ToolTip="Avatar image URL or file path" TextChanged="PreviewImageChanged"/>
+                                </DockPanel>
+                                <TextBlock Text="Cover image" Style="{StaticResource EditorLabel}"/>
+                                <DockPanel Margin="0,0,0,8" LastChildFill="True">
+                                    <Button Content="Browse" DockPanel.Dock="Right" Style="{StaticResource EditorButton}" Height="38" Margin="8,0,0,0" Click="BtnBrowseCover_Click"/>
+                                    <TextBox x:Name="TxtCoverImage" Height="38" Style="{StaticResource EditorInputBox}" ToolTip="Hero cover image URL or file path" TextChanged="PreviewImageChanged"/>
+                                </DockPanel>
+                                <TextBlock Text="Second cover image" Style="{StaticResource EditorLabel}"/>
+                                <DockPanel Margin="0,0,0,8" LastChildFill="True">
+                                    <Button Content="Browse" DockPanel.Dock="Right" Style="{StaticResource EditorButton}" Height="38" Margin="8,0,0,0" Click="BtnBrowseCover2_Click"/>
+                                    <TextBox x:Name="TxtCoverImage2" Height="38" Style="{StaticResource EditorInputBox}" ToolTip="Secondary cover image URL or file path" TextChanged="PreviewImageChanged"/>
+                                </DockPanel>
+
+                                <TextBlock Text="Social links" Foreground="{DynamicResource TextDark}" FontSize="13" FontWeight="Bold" Margin="0,22,0,0"/>
+                                <TextBlock Text="Website" Style="{StaticResource EditorLabel}"/>
+                                <TextBox x:Name="TxtSocialWebsite" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBlock Text="Facebook" Style="{StaticResource EditorLabel}"/>
+                                <TextBox x:Name="TxtSocialFacebook" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBlock Text="Instagram" Style="{StaticResource EditorLabel}"/>
+                                <TextBox x:Name="TxtSocialInstagram" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBlock Text="Twitter / X" Style="{StaticResource EditorLabel}"/>
+                                <TextBox x:Name="TxtSocialTwitter" Height="38" Style="{StaticResource EditorInputBox}"/>
+                                <TextBlock Text="WhatsApp" Style="{StaticResource EditorLabel}"/>
+                                <TextBox x:Name="TxtSocialWhatsapp" Height="38" Style="{StaticResource EditorInputBox}"/>
+                            </StackPanel>
+                        </Border>
+                    </Expander>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

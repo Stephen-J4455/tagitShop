@@ -1,38 +1,40 @@
 Imports System
 Imports System.Collections.Generic
+Imports System.Linq
 Imports System.Windows
 Imports System.Windows.Controls
 
 Partial Public Class Reels
     Inherits Page
 
-    Public Class ReelItem
-        Public Property title As String
-        Public Property views As Integer
-        Public Property time As String
-    End Class
-
     Public Sub New()
         InitializeComponent()
-        LoadLocalReels()
+        AddHandler Loaded, AddressOf Page_Loaded
     End Sub
 
-    Private Sub LoadLocalReels()
+    Private Async Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
+        RemoveHandler Loaded, AddressOf Page_Loaded
+        Await LoadReelsAsync()
+    End Sub
+
+    Private Async Function LoadReelsAsync() As Threading.Tasks.Task
         Try
-            Dim reels = New List(Of ReelItem)() From {
-                New ReelItem() With {.title = "Fresh Organic Apples - Farm to Table", .views = 1250, .time = "1 day ago"},
-                New ReelItem() With {.title = "Baking Fresh Bread Every Morning", .views = 890, .time = "2 days ago"},
-                New ReelItem() With {.title = "Weekend Flash Sale Preview", .views = 2100, .time = "3 days ago"},
-                New ReelItem() With {.title = "Meet Our Local Farmers", .views = 650, .time = "1 week ago"},
-                New ReelItem() With {.title = "Store Tour & Product Highlights", .views = 1420, .time = "2 weeks ago"}
-            }
+            LoadingIndicator.Visibility = Visibility.Visible
+            EmptyReelsState.Visibility = Visibility.Collapsed
+            ReelsGrid.Visibility = Visibility.Collapsed
 
-            ReelsGrid.ItemsSource = reels
-            TxtStatus.Text = $"Loaded {reels.Count} reels (local)"
+            Await DataCache.EnsureLoadedAsync()
+            Dim reels = DataCache.Reels
+            ReelsGrid.ItemsSource = reels.OrderByDescending(Function(r) r.created_at).ToList()
+            ReelsGrid.Visibility = If(reels.Count = 0, Visibility.Collapsed, Visibility.Visible)
+            EmptyReelsState.Visibility = If(reels.Count = 0, Visibility.Visible, Visibility.Collapsed)
+            TxtStatus.Text = If(AppSession.Mode = StoreMode.Live, "Live reels from your store.", "Demo reels stored locally.")
         Catch ex As Exception
-            TxtStatus.Text = "Reels load error: " & ex.Message
+            TxtStatus.Text = ex.Message
+        Finally
+            LoadingIndicator.Visibility = Visibility.Collapsed
         End Try
-    End Sub
+    End Function
 
     Private Sub BtnUploadReel_Click(sender As Object, e As RoutedEventArgs)
         MessageBox.Show("Upload a short video reel for your store.", "Upload Reel", MessageBoxButton.OK, MessageBoxImage.Information)

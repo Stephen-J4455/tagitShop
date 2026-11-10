@@ -1,4 +1,4 @@
-<Window x:Class="MainWindow"
+﻿<Window x:Class="MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,31 +6,32 @@
         mc:Ignorable="d"
         Title="tagitShop"
         Icon="Assets/tagit-icon.png"
-        Width="1180" Height="760"
-        MinWidth="1000" MinHeight="620"
+        Width="1200" Height="800"
+        MinWidth="900" MinHeight="600"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource WindowBackground}"
+        Background="{DynamicResource WindowBackground}"
         WindowStyle="None"
         AllowsTransparency="True"
         Loaded="Window_Loaded"
         StateChanged="Window_StateChanged">
-    <Grid Background="{StaticResource WindowBackground}">
+    <Grid Background="{DynamicResource WindowBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="42"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="{StaticResource SidebarBackground}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+        <!-- Title bar -->
+        <Border Grid.Row="0" Background="{DynamicResource TitleBarBackground}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="0,0,0,1" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="18,0,0,0">
-                    <TextBlock Text="tagitShop" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextWhite}" VerticalAlignment="Center"/>
-                    <TextBlock Text=" / STORE DESK" FontSize="11" Foreground="#B7C7BF" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
+                    <TextBlock Text="tagitShop" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextDark}" VerticalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnThemeToggle" Content="Dark mode" Style="{StaticResource GhostButton}" MinWidth="104" Height="32" Margin="0,0,8,0" Click="BtnThemeToggle_Click" ToolTip="Switch to dark mode"/>
                     <Button x:Name="BtnMinimize" Content="_" Style="{StaticResource WindowControlButton}" Click="BtnMinimize_Click"/>
                     <Button x:Name="BtnMaximize" Content="□" Style="{StaticResource WindowControlButton}" Click="BtnMaximize_Click"/>
                     <Button x:Name="BtnClose" Content="×" Style="{StaticResource WindowCloseButton}" Click="BtnClose_Click"/>
@@ -39,113 +40,157 @@
         </Border>
 
         <Grid Grid.Row="1">
+            <!-- Login panel -->
             <Grid x:Name="LoginPanel" Visibility="Visible">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.15*"/>
-                    <ColumnDefinition Width="0.85*"/>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="0.8*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Background="{StaticResource TagitDark}" Padding="56,52">
+
+                <!-- Left: brand hero -->
+                <Border Grid.Column="0" Background="{DynamicResource TagitDark}" Padding="60,52">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <StackPanel VerticalAlignment="Center" MaxWidth="600">
-                            <Border Background="{StaticResource TagitPrimary}" CornerRadius="4" Padding="10,6" HorizontalAlignment="Left" Margin="0,0,0,28">
-                                <TextBlock Text="INVENTORY / SALES / STORE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TagitDark}"/>
+                        <StackPanel VerticalAlignment="Center" MaxWidth="620">
+                            <Border Background="{StaticResource TagitPrimary}" CornerRadius="6" Padding="10,6" HorizontalAlignment="Left" Margin="0,0,0,28">
+                                <TextBlock Text="INVENTORY / SALES / STORE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextWhite}"/>
                             </Border>
-                            <TextBlock Text="Know what’s on your shelves." FontFamily="Georgia" FontSize="40" FontWeight="Bold" Foreground="White" TextWrapping="Wrap" MaxWidth="540"/>
-                            <TextBlock Text="A focused desktop workspace for stock counts, product pricing, customer balances, and sales performance." FontSize="16" Foreground="#D0DED8" TextWrapping="Wrap" MaxWidth="520" Margin="0,18,0,0" LineHeight="25"/>
-                            <Border Height="1" Background="#324154" Margin="0,34,0,24"/>
-                            <TextBlock Text="tagitShop  /  STORE OPERATIONS" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TagitAccent}"/>
+                            <TextBlock Text="Know what's on your shelves." FontFamily="{StaticResource FontHeading}" FontSize="44" FontWeight="Bold" Foreground="White" TextWrapping="Wrap" MaxWidth="560"/>
+                            <TextBlock Text="A focused desktop workspace for stock counts, product pricing, customer balances, and sales performance." FontSize="17" Foreground="#D0DED8" TextWrapping="Wrap" MaxWidth="540" Margin="0,20,0,0" LineHeight="26"/>
+                            <Border Height="1" Background="#324154" Margin="0,36,0,28"/>
                         </StackPanel>
-                        <TextBlock Grid.Row="1" Text="A practical view of your shop, from opening count to close." FontSize="12" Foreground="#B7C7BF"/>
+                        <TextBlock Grid.Row="1" Text="A practical view of your shop, from opening count to close." FontSize="13" Foreground="#B7C7BF"/>
                     </Grid>
                 </Border>
 
-                <Grid Grid.Column="1" Margin="28">
-                    <Border x:Name="ModePickerPanel" Style="{StaticResource LoginCard}" Width="430" Padding="30" VerticalAlignment="Center">
+                <!-- Right: sign in -->
+                <Grid Grid.Column="1" Margin="32">
+                    <Border x:Name="LoginCard" Style="{StaticResource LoginCard}" Width="440" Padding="36" VerticalAlignment="Center">
                         <StackPanel>
-                            <TextBlock Text="Store Desk" FontFamily="Georgia" FontSize="28" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
-                            <TextBlock Text="Choose how you want to work today." FontSize="14" Foreground="{StaticResource TextMuted}" Margin="0,7,0,26"/>
-                            <Button Content="Open demo store" Style="{StaticResource PrimaryButton}" Height="48" Click="BtnStartDemo_Click"/>
-                            <TextBlock Text="Sample data saved on this computer. No account or internet required." FontSize="12" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap" Margin="0,10,0,24"/>
-                            <Border Height="1" Background="{StaticResource TagitBorder}" Margin="0,0,0,20"/>
-                            <Button Content="Sign in to a live store" Style="{StaticResource OutlineButton}" Height="46" Click="BtnShowLiveLogin_Click"/>
-                            <TextBlock Text="Connect to your tagit store account." FontSize="12" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap" Margin="0,10,0,0"/>
-                        </StackPanel>
-                    </Border>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,8">
+                                <Image Source="Assets/tagit-icon.png" Width="42" Height="42" Stretch="Uniform" Margin="0,0,12,0"/>
+                                <TextBlock Text="Sign in to Tagit" FontFamily="{StaticResource FontHeading}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextDark}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Use your store account, or enter the demo credentials below." FontSize="14" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,0,0,24"/>
 
-                    <Border x:Name="LiveLoginPanel" Style="{StaticResource LoginCard}" Width="430" Padding="30" VerticalAlignment="Center" Visibility="Collapsed">
-                        <StackPanel>
-                            <Button Content="←  Back" Style="{StaticResource OutlineButton}" HorizontalAlignment="Left" Padding="10,5" Click="BtnBackToModes_Click"/>
-                            <TextBlock Text="Live store sign in" FontFamily="Georgia" FontSize="26" FontWeight="Bold" Foreground="{StaticResource TextDark}" Margin="0,20,0,5"/>
-                            <TextBlock Text="Use the account linked to your tagit store." FontSize="13" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap" Margin="0,0,0,24"/>
                             <TextBlock Text="EMAIL" Style="{StaticResource FilterLabel}"/>
-                            <TextBox x:Name="TxtLoginEmail" Style="{StaticResource LoginInput}" Tag="you@store.com" Margin="0,0,0,16"/>
+                            <TextBox x:Name="TxtLoginEmail" Style="{StaticResource LoginInput}" Tag="you@store.com" Margin="0,0,0,18"/>
+
                             <TextBlock Text="PASSWORD" Style="{StaticResource FilterLabel}"/>
-                            <PasswordBox x:Name="PwdLoginPassword" Style="{StaticResource LoginPassword}" Margin="0,0,0,18"/>
-                            <Button x:Name="BtnLogin" Content="Sign in securely" Style="{StaticResource PrimaryButton}" Height="46" Click="BtnLogin_Click"/>
-                            <TextBlock x:Name="TxtLoginFeedback" TextWrapping="Wrap" FontSize="12" Foreground="#A63D32" Margin="0,12,0,0"/>
+                            <Grid Margin="0,0,0,12">
+                                <PasswordBox x:Name="PwdLoginPassword" Style="{StaticResource LoginPassword}" Tag="Enter your password" Padding="38,0,42,0" PasswordChanged="PwdLoginPassword_PasswordChanged"/>
+                                <TextBox x:Name="TxtLoginPasswordReveal" Style="{StaticResource LoginInput}" Tag="Enter your password" Padding="38,0,42,0" Visibility="Collapsed" TextChanged="TxtLoginPasswordReveal_TextChanged"/>
+                                <Button x:Name="BtnTogglePassword" Style="{StaticResource InputAdornmentButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" Click="BtnTogglePassword_Click">
+                                    <Grid Width="17" Height="17">
+                                        <Path x:Name="PasswordEyeOpen" Data="{StaticResource InputIconEye}" Stretch="Uniform" Stroke="{DynamicResource TextMuted}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent"/>
+                                        <Path x:Name="PasswordEyeClosed" Data="{StaticResource InputIconEyeOff}" Stretch="Uniform" Stroke="{DynamicResource TextMuted}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Fill="Transparent" Visibility="Collapsed"/>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+
+                            <TextBlock Text="Demo access: demo@tagit.local / demo" FontSize="12" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,20"/>
+
+                            <Button x:Name="BtnLogin" Content="Sign in securely" Style="{StaticResource PrimaryButton}" Height="48" Click="BtnLogin_Click"/>
+                            <TextBlock x:Name="TxtLoginFeedback" TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource ErrorText}" Margin="0,14,0,0"/>
                         </StackPanel>
                     </Border>
                 </Grid>
             </Grid>
 
+            <!-- Dashboard panel -->
             <Grid x:Name="DashboardPanel" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="232"/>
+                    <ColumnDefinition x:Name="SidebarColumn" Width="268"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="62"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Column="0" Grid.RowSpan="2" Background="{StaticResource SidebarBackground}">
-                    <Grid Margin="0,22,0,18">
+                <!-- Sidebar -->
+                <Border x:Name="SidebarPanel" Grid.Column="0" Width="{StaticResource SidebarWidthExpanded}" Background="{DynamicResource SidebarBackground}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="0,0,1,0">
+                    <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <StackPanel Margin="22,0,18,26">
-                            <TextBlock Text="tagitShop" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                            <TextBlock Text="STORE DESK" FontSize="10" FontWeight="SemiBold" Foreground="#B7C7BF" Margin="0,4,0,0"/>
-                        </StackPanel>
-                        <StackPanel Grid.Row="1">
-                            <TextBlock Text="WORKSPACE" FontSize="10" FontWeight="Bold" Foreground="#92A79D" Margin="22,0,0,8"/>
-                            <Button x:Name="BtnOverview" Content="Overview" Style="{StaticResource SidebarButtonActive}" Click="BtnOverview_Click"/>
-                            <Button x:Name="BtnStocktake" Content="Stocktake" Style="{StaticResource SidebarButton}" Click="BtnStocktake_Click"/>
-                            <Button x:Name="BtnCatalog" Content="Products &amp; pricing" Style="{StaticResource SidebarButton}" Click="BtnCatalog_Click"/>
-                            <Button x:Name="BtnOrders" Content="Sales" Style="{StaticResource SidebarButton}" Click="BtnOrders_Click"/>
-                            <Button x:Name="BtnDebt" Content="Customer debts" Style="{StaticResource SidebarButton}" Click="BtnDebt_Click"/>
-                            <Button x:Name="BtnReviews" Content="Product reviews" Style="{StaticResource SidebarButton}" Click="BtnReviews_Click"/>
-                            <Button x:Name="BtnInsights" Content="Insights" Style="{StaticResource SidebarButton}" Click="BtnInsights_Click"/>
-                            <Border Height="1" Background="#36544B" Margin="22,18,22,16"/>
-                            <TextBlock Text="STORE" FontSize="10" FontWeight="Bold" Foreground="#92A79D" Margin="22,0,0,8"/>
-                            <Button x:Name="BtnStoreProfile" Content="Store settings" Style="{StaticResource SidebarButton}" Click="BtnStoreProfile_Click"/>
-                        </StackPanel>
-                        <StackPanel Grid.Row="2" Margin="18,12,18,0">
-                            <Border Height="1" Background="#2C3B4F" Margin="4,0,4,14"/>
-                            <TextBlock x:Name="TxtModeBadge" Text="DEMO / LOCAL" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TagitPrimary}" Margin="4,0,0,5"/>
-                            <TextBlock x:Name="TxtSidebarStoreName" Text="tagit Demo Store" FontSize="12" Foreground="White" TextTrimming="CharacterEllipsis" Margin="4,0,0,10"/>
-                            <Button x:Name="BtnLogOut" Content="Exit store" Style="{StaticResource SidebarButton}" Click="BtnLogOut_Click"/>
+
+                        <Grid x:Name="SidebarHeader" Margin="14,18,14,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image x:Name="SidebarLogo" Source="Assets/tagit-icon.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                            <StackPanel x:Name="SidebarIdentity" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,4,0">
+                                <TextBlock x:Name="TxtSidebarBrandTitle" Text="Tagit Shop" FontFamily="{StaticResource FontHeading}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextDark}"/>
+                                <TextBlock x:Name="TxtSidebarStoreName" Text="tagit Demo Store" FontSize="11" Foreground="{DynamicResource SidebarTextSecondary}" TextTrimming="CharacterEllipsis" MaxWidth="154" Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <Button x:Name="BtnCollapseSidebar" Content="‹" Grid.Column="2" Style="{StaticResource SidebarCollapseButton}" Click="BtnCollapseSidebar_Click"/>
+                        </Grid>
+
+                        <Border x:Name="SidebarSearchBorder" Grid.Row="1" Margin="14,0,14,14" Height="36" Background="{DynamicResource InputSurface}" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" CornerRadius="9">
+                            <Grid>
+                                <Path Data="M11,2 A9,9 0 1 0 11,20 A9,9 0 1 0 11,2 M17.5,17.5 L22,22" Width="15" Height="15" Stretch="Uniform" Stroke="{DynamicResource SidebarTextSecondary}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="12,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <TextBox x:Name="TxtSidebarSearch" AutomationProperties.Name="Search navigation" Margin="34,0,8,0" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextDark}" FontSize="12" TextChanged="TxtSidebarSearch_TextChanged"/>
+                                <TextBlock x:Name="TxtSidebarSearchPlaceholder" Text="Find a page..." Margin="35,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource SidebarTextSecondary}" FontSize="12" IsHitTestVisible="False"/>
+                            </Grid>
+                        </Border>
+
+                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Margin="12,0,12,10">
+                                <StackPanel x:Name="NavGroupWorkspace">
+                                    <TextBlock x:Name="TxtSectionWorkspace" Text="Workspace" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource SidebarTextSecondary}" Margin="10,3,0,7"/>
+                                    <Button x:Name="BtnOverview" Tag="{StaticResource SidebarIconOverview}" Content="Overview" ToolTip="Overview" Style="{StaticResource SidebarButtonActive}" Click="BtnOverview_Click"/>
+                                    <Button x:Name="BtnCatalog" Tag="{StaticResource SidebarIconProducts}" Content="Products &amp; pricing" ToolTip="Products &amp; pricing" Style="{StaticResource SidebarButton}" Click="BtnCatalog_Click"/>
+                                    <Button x:Name="BtnOrders" Tag="{StaticResource SidebarIconSales}" Content="Sales" ToolTip="Sales" Style="{StaticResource SidebarButton}" Click="BtnOrders_Click"/>
+                                    <Button x:Name="BtnDebt" Tag="{StaticResource SidebarIconDebt}" Content="Customer debts" ToolTip="Customer debts" Style="{StaticResource SidebarButton}" Click="BtnDebt_Click"/>
+                                    <Button x:Name="BtnReviews" Tag="{StaticResource SidebarIconReviews}" Content="Product reviews" ToolTip="Product reviews" Style="{StaticResource SidebarButton}" Click="BtnReviews_Click"/>
+                                    <Button x:Name="BtnInsights" Tag="{StaticResource SidebarIconInsights}" Content="Insights" ToolTip="Insights" Style="{StaticResource SidebarButton}" Click="BtnInsights_Click"/>
+                                </StackPanel>
+
+                                <Border x:Name="Divider1" Height="1" Background="{DynamicResource TagitBorder}" Margin="10,12,10,12"/>
+
+                                <StackPanel x:Name="NavGroupPromotions">
+                                    <TextBlock x:Name="TxtSectionPromotions" Text="Promotions" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource SidebarTextSecondary}" Margin="10,0,0,7"/>
+                                    <Button x:Name="BtnFlash" Tag="{StaticResource SidebarIconFlash}" Content="Flash Sales" ToolTip="Flash Sales" Style="{StaticResource SidebarButton}" Click="BtnFlash_Click"/>
+                                    <Button x:Name="BtnCoupons" Tag="{StaticResource SidebarIconCoupons}" Content="Coupons" ToolTip="Coupons" Style="{StaticResource SidebarButton}" Click="BtnCoupons_Click"/>
+                                    <Button x:Name="BtnReels" Tag="{StaticResource SidebarIconReels}" Content="Reels / Status" ToolTip="Reels / Status" Style="{StaticResource SidebarButton}" Click="BtnReels_Click"/>
+                                </StackPanel>
+
+                                <Border x:Name="Divider2" Height="1" Background="{DynamicResource TagitBorder}" Margin="10,12,10,12"/>
+
+                                <StackPanel x:Name="NavGroupStore">
+                                    <TextBlock x:Name="TxtSectionStore" Text="Store" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource SidebarTextSecondary}" Margin="10,0,0,7"/>
+                                    <Button x:Name="BtnStoreProfile" Tag="{StaticResource SidebarIconStoreSettings}" Content="Store settings" ToolTip="Store settings" Style="{StaticResource SidebarButton}" Click="BtnStoreProfile_Click"/>
+                                    <Button x:Name="BtnStorefront" Tag="{StaticResource SidebarIconStorefront}" Content="Storefront Editor" ToolTip="Storefront Editor" Style="{StaticResource SidebarButton}" Click="BtnStorefront_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <StackPanel Grid.Row="3" Margin="12,8,12,14">
+                            <Border x:Name="Divider3" Height="1" Background="{DynamicResource TagitBorder}" Margin="8,0,8,12"/>
+                            <Border x:Name="SidebarFooterDetails" Background="{DynamicResource SidebarSurface}" CornerRadius="9" Padding="12,10" Margin="0,0,0,8">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Ellipse Width="7" Height="7" Fill="{StaticResource TagitPrimary}" Margin="0,0,9,0"/>
+                                    <TextBlock x:Name="TxtModeBadge" Text="DEMO / LOCAL" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}"/>
+                                </StackPanel>
+                            </Border>
+                            <Button x:Name="BtnLogOut" Tag="{StaticResource SidebarIconExit}" Content="Exit store" ToolTip="Exit store" Style="{StaticResource SidebarButton}" Click="BtnLogOut_Click"/>
                         </StackPanel>
                     </Grid>
                 </Border>
 
-                <Border Grid.Column="1" Grid.Row="0" Background="{StaticResource TextWhite}" BorderBrush="{StaticResource TagitBorder}" BorderThickness="0,0,0,1">
-                    <Grid Margin="26,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="TxtWindowTitle" Text="Overview" FontSize="17" FontWeight="SemiBold" Foreground="{StaticResource TextDark}" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="TxtStoreName" Grid.Column="1" Text="tagit Demo Store" FontSize="12" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center"/>
-                    </Grid>
-                </Border>
-                <Frame Grid.Column="1" Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="{StaticResource WindowBackground}"/>
+                <!-- Main content area -->
+                <Grid Grid.Column="1">
+                    <!-- Page content -->
+                    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="{DynamicResource WindowBackground}"/>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

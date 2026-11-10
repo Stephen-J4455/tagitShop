@@ -9,6 +9,14 @@ Imports System.Text.Json
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "tagitShop",
             "data.json")
+        Private Shared ReadOnly PreferencesPath As String = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "tagitShop",
+            "preferences.json")
+
+        Private Class AppPreferences
+            Public Property ThemeMode As String = "light"
+        End Class
 
         Public Class AppData
             Public Property Products As New List(Of ProductItem)()
@@ -16,6 +24,9 @@ Imports System.Text.Json
             Public Property DebtRecords As New List(Of DebtRecord)()
             Public Property Stocktakes As New List(Of StocktakeSession)()
             Public Property Reviews As New List(Of ReviewItem)()
+            Public Property FlashSales As New List(Of FlashSaleRecord)()
+            Public Property Coupons As New List(Of CouponRecord)()
+            Public Property Reels As New List(Of ReelRecord)()
             Public Property Store As New StoreSettings()
         End Class
 
@@ -23,6 +34,19 @@ Imports System.Text.Json
             Public Property name As String = "tagit Demo Store"
             Public Property email As String = "store@tagit.local"
             Public Property description As String = "A neighborhood store serving everyday essentials."
+            Public Property store_description As String = "A neighborhood store serving everyday essentials."
+            Public Property theme_color As String = "#e85b55"
+            Public Property storefront_theme As String = "chicwave"
+            Public Property storefront_layout As String = "classic"
+            Public Property storefront_enabled As Boolean?
+            Public Property avatar As String = Nothing
+            Public Property cover_image As String = Nothing
+            Public Property cover_image_2 As String = Nothing
+            Public Property social_website As String = Nothing
+            Public Property social_facebook As String = Nothing
+            Public Property social_instagram As String = Nothing
+            Public Property social_twitter As String = Nothing
+            Public Property social_whatsapp As String = Nothing
         End Class
 
         Public Class ProductItem
@@ -30,14 +54,34 @@ Imports System.Text.Json
             Public Property title As String
             Public Property price As Decimal
             Public Property cost_price As Decimal
+            Public Property compare_at_price As Decimal?
+            Public Property shipping_fee As Decimal
             Public Property thumbnail As String
+            Public Property thumbnails As New List(Of String)()
+            Public Property video_url As String
+            Public Property r2_video_key As String
             Public Property seller_id As String
             Public Property status As String
             Public Property discount As Integer
             Public Property quantity As Integer
             Public Property reorder_level As Integer
+            Public Property sold_count As Integer
             Public Property rating As Double
             Public Property category As String
+            Public Property category_id As String
+            Public Property description As String
+            Public Property sizes As New List(Of String)()
+            Public Property colors As New List(Of String)()
+            Public Property badges As New List(Of String)()
+            Public Property tags As New List(Of String)()
+            Public Property specifications As New Dictionary(Of String, String)()
+            Public Property track_inventory As Boolean = True
+            Public Property allow_backorder As Boolean
+            Public Property is_preorder As Boolean
+            Public Property vendor As String
+            Public Property weight As Decimal?
+            Public Property weight_unit As String = "kg"
+            Public Property slug As String
             Public Property sku As String
             Public Property barcode As String
             Public Property updated_at As DateTime
@@ -68,6 +112,7 @@ Imports System.Text.Json
             Public Property occurred_at As DateTime
             Public Property paid_at As DateTime?
             Public Property payment_status As String
+            Public Property service_fee As Decimal
             Public Property recordDebt As Boolean
             Public Property debtAmount As Decimal
             Public Property cost_of_goods_sold As Decimal?
@@ -125,6 +170,41 @@ Imports System.Text.Json
             Public Property created_at As DateTime
         End Class
 
+        Public Class FlashSaleRecord
+            Public Property id As String
+            Public Property product_id As String
+            Public Property flash_price As Decimal
+            Public Property original_price As Decimal
+            Public Property start_time As DateTime
+            Public Property end_time As DateTime
+            Public Property max_quantity As Integer?
+            Public Property sold_quantity As Integer
+            Public Property is_active As Boolean
+            Public Property created_at As DateTime
+        End Class
+
+        Public Class CouponRecord
+            Public Property id As String
+            Public Property code As String
+            Public Property description As String
+            Public Property discount_type As String
+            Public Property discount_value As Decimal
+            Public Property usage_count As Integer
+            Public Property valid_until As DateTime?
+            Public Property is_active As Boolean
+            Public Property created_at As DateTime
+        End Class
+
+        Public Class ReelRecord
+            Public Property id As String
+            Public Property title As String
+            Public Property video_url As String
+            Public Property thumbnail_url As String
+            Public Property views As Integer
+            Public Property likes As Integer
+            Public Property created_at As DateTime
+        End Class
+
         Private Shared _data As AppData = Nothing
         Private Shared _lock As New Object()
 
@@ -165,6 +245,34 @@ Imports System.Text.Json
                 Catch ex As Exception
                     Throw New IOException("Could not save shop data to " & DataPath & ".", ex)
                 End Try
+            End SyncLock
+        End Sub
+
+        Public Shared Function LoadThemeMode() As String
+            SyncLock _lock
+                If Not File.Exists(PreferencesPath) Then Return "light"
+
+                Try
+                    Dim preferences = JsonSerializer.Deserialize(Of AppPreferences)(File.ReadAllText(PreferencesPath))
+                    If preferences Is Nothing OrElse String.IsNullOrWhiteSpace(preferences.ThemeMode) Then Return "light"
+                    Return preferences.ThemeMode
+                Catch ex As JsonException
+                    Throw New IOException("Could not read tagitShop appearance preferences from " & PreferencesPath & ".", ex)
+                End Try
+            End SyncLock
+        End Function
+
+        Public Shared Sub SaveThemeMode(themeMode As String)
+            If Not String.Equals(themeMode, "light", StringComparison.OrdinalIgnoreCase) AndAlso
+               Not String.Equals(themeMode, "dark", StringComparison.OrdinalIgnoreCase) Then
+                Throw New ArgumentException("Theme mode must be light or dark.", NameOf(themeMode))
+            End If
+
+            SyncLock _lock
+                Dim preferencesDirectory = Path.GetDirectoryName(PreferencesPath)
+                If Not Directory.Exists(preferencesDirectory) Then Directory.CreateDirectory(preferencesDirectory)
+                Dim preferences = New AppPreferences() With {.ThemeMode = themeMode.ToLowerInvariant()}
+                File.WriteAllText(PreferencesPath, JsonSerializer.Serialize(preferences))
             End SyncLock
         End Sub
 

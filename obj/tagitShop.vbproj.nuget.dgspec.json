@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\tagit\\tagitShop\\tagitShop.vbproj": {}
+    "C:\\Projects\\tagit\\tagitdesktop\\tagitShop.vbproj": {}
   },
   "projects": {
-    "C:\\Projects\\tagit\\tagitShop\\tagitShop.vbproj": {
+    "C:\\Projects\\tagit\\tagitdesktop\\tagitShop.vbproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\tagit\\tagitShop\\tagitShop.vbproj",
+        "projectUniqueName": "C:\\Projects\\tagit\\tagitdesktop\\tagitShop.vbproj",
         "projectName": "tagitShop",
-        "projectPath": "C:\\Projects\\tagit\\tagitShop\\tagitShop.vbproj",
+        "projectPath": "C:\\Projects\\tagit\\tagitdesktop\\tagitShop.vbproj",
         "packagesPath": "C:\\Users\\steve\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\tagit\\tagitShop\\obj\\",
+        "outputPath": "C:\\Projects\\tagit\\tagitdesktop\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,6 +51,12 @@
         "net10.0-windows": {
           "framework": "net10.0-windows7.0",
           "targetAlias": "net10.0-windows",
+          "dependencies": {
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.104.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
