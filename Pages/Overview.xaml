@@ -15,6 +15,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Content="Products" Style="{StaticResource OutlineButton}" Height="38" Padding="16,8" Margin="0,0,8,0" Click="BtnCatalog_Click"/>
+                    <Button Content="Create Coupon" Style="{StaticResource OutlineButton}" Height="38" Padding="16,8" Margin="0,0,8,0" Click="BtnCreateCoupon_Click"/>
                     <Button Content="View sales" Style="{StaticResource PrimaryButton}" Height="38" Padding="16,8" Click="BtnOrders_Click"/>
                 </StackPanel>
             </Grid>

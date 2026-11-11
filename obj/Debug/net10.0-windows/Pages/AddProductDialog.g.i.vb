@@ -412,7 +412,7 @@ Partial Public Class AddProductDialog
             Return
         End If
         _contentLoaded = true
-        Dim resourceLocater As System.Uri = New System.Uri("/tagitShop;component/pages/addproductdialog.xaml", System.UriKind.Relative)
+        Dim resourceLocater As System.Uri = New System.Uri("/tagitShop;V1.0.0.0;component/pages/addproductdialog.xaml", System.UriKind.Relative)
         
         #ExternalSource("..\..\..\..\Pages\AddProductDialog.xaml",1)
         System.Windows.Application.LoadComponent(Me, resourceLocater)

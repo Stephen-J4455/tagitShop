@@ -15,7 +15,7 @@
             <Setter Property="Background" Value="{DynamicResource InputSurface}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource TagitBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="38,8,12,8"/>
+            <Setter Property="Padding" Value="38,0,12,0"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="SelectionBrush" Value="#88FF5A79"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -290,6 +290,7 @@
                                     </ItemsControl>
                                     <TextBlock x:Name="PreviewEmptyProducts" Text="Your products will appear here." Foreground="#667085" FontSize="9" TextAlignment="Center" Margin="0,6,0,0" Visibility="Collapsed"/>
                                     <ContentControl x:Name="PreviewBelowHeroHost"/>
+                                    <ContentControl x:Name="PreviewSocialLinksHost" Margin="0,14,0,0"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -468,9 +469,9 @@
                                 <TextBlock Text="Contact email" Style="{StaticResource EditorLabel}"/>
                                 <TextBox x:Name="TxtStoreEmail" Height="40" Style="{StaticResource EditorInputBox}" Tag="contact@yourstore.com"/>
                                 <TextBlock Text="Store description" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtDescription" Height="74" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}" Tag="Tell customers what makes your store special..." TextChanged="PreviewTextChanged"/>
+                                <TextBox x:Name="TxtDescription" Height="74" Padding="38,8,12,8" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}" Tag="Tell customers what makes your store special..." TextChanged="PreviewTextChanged"/>
                                 <TextBlock Text="Store description (detail page)" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtStoreDescription" Height="74" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}" Tag="Add more details about your store..."/>
+                                <TextBox x:Name="TxtStoreDescription" Height="74" Padding="38,8,12,8" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Style="{StaticResource EditorInputBox}" Tag="Add more details about your store..."/>
 
                                 <TextBlock Text="Images" Foreground="{DynamicResource TextDark}" FontSize="13" FontWeight="Bold" Margin="0,22,0,0"/>
                                 <TextBlock Text="Avatar / logo" Style="{StaticResource EditorLabel}"/>
@@ -491,15 +492,15 @@
 
                                 <TextBlock Text="Social links" Foreground="{DynamicResource TextDark}" FontSize="13" FontWeight="Bold" Margin="0,22,0,0"/>
                                 <TextBlock Text="Website" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialWebsite" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL"/>
+                                <TextBox x:Name="TxtSocialWebsite" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL" TextChanged="PreviewTextChanged"/>
                                 <TextBlock Text="Facebook" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialFacebook" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL"/>
+                                <TextBox x:Name="TxtSocialFacebook" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL" TextChanged="PreviewTextChanged"/>
                                 <TextBlock Text="Instagram" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialInstagram" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL"/>
+                                <TextBox x:Name="TxtSocialInstagram" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL" TextChanged="PreviewTextChanged"/>
                                 <TextBlock Text="Twitter / X" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialTwitter" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL"/>
+                                <TextBox x:Name="TxtSocialTwitter" Height="38" Style="{StaticResource EditorInputBox}" Tag="Enter a URL" TextChanged="PreviewTextChanged"/>
                                 <TextBlock Text="WhatsApp" Style="{StaticResource EditorLabel}"/>
-                                <TextBox x:Name="TxtSocialWhatsapp" Height="38" Style="{StaticResource EditorInputBox}" Tag="+233 20 000 0000"/>
+                                <TextBox x:Name="TxtSocialWhatsapp" Height="38" Style="{StaticResource EditorInputBox}" Tag="+233 20 000 0000" TextChanged="PreviewTextChanged"/>
                             </StackPanel>
                         </Border>
                     </Expander>

@@ -70,7 +70,7 @@ Partial Public Class HelpSupport
             Return
         End If
         _contentLoaded = true
-        Dim resourceLocater As System.Uri = New System.Uri("/tagitShop;component/pages/helpsupport.xaml", System.UriKind.Relative)
+        Dim resourceLocater As System.Uri = New System.Uri("/tagitShop;V1.0.0.0;component/pages/helpsupport.xaml", System.UriKind.Relative)
         
         #ExternalSource("..\..\..\..\Pages\HelpSupport.xaml",1)
         System.Windows.Application.LoadComponent(Me, resourceLocater)

@@ -6,6 +6,7 @@ Public NotInheritable Class DataCache
         Private Shared ReadOnly _lock As New Object()
         Private Shared _loaded As Boolean = False
         Private Shared _loading As Task(Of CacheData) = Nothing
+        Private Shared _generation As Integer
 
         Private Class CacheData
             Public Products As New List(Of LocalData.ProductItem)()
@@ -27,6 +28,7 @@ Public NotInheritable Class DataCache
 
         Public Shared Async Function EnsureLoadedAsync() As Task
             Dim loadTask As Task(Of CacheData) = Nothing
+            Dim loadGeneration As Integer
             SyncLock _lock
                 If _loaded Then Return
                 If _loading IsNot Nothing Then
@@ -35,12 +37,14 @@ Public NotInheritable Class DataCache
                     _loading = LoadAllAsync()
                     loadTask = _loading
                 End If
+                loadGeneration = _generation
             End SyncLock
 
             If loadTask IsNot Nothing Then
                 Dim data = Await loadTask
-                Apply(data)
                 SyncLock _lock
+                    If loadGeneration <> _generation Then Return
+                    Apply(data)
                     _loaded = True
                     _loading = Nothing
                 End SyncLock
@@ -51,6 +55,24 @@ Public NotInheritable Class DataCache
             Dim products = Await SupabaseService.LoadProductsAsync()
             DataCache.Products = products
             Return products
+        End Function
+
+        Public Shared Async Function RefreshReelsAsync() As Task(Of List(Of SupabaseService.ReelItem))
+            Dim reels = Await SupabaseService.LoadReelsAsync()
+            DataCache.Reels = reels
+            Return reels
+        End Function
+
+        Public Shared Async Function RefreshCouponsAsync() As Task(Of List(Of SupabaseService.CouponItem))
+            Dim coupons = Await SupabaseService.LoadCouponsAsync()
+            DataCache.Coupons = coupons
+            Return coupons
+        End Function
+
+        Public Shared Async Function RefreshStoreSettingsAsync() As Task(Of LocalData.StoreSettings)
+            Dim settings = Await SupabaseService.LoadStoreSettingsAsync()
+            DataCache.StoreSettings = settings
+            Return settings
         End Function
 
         Private Shared Async Function LoadAllAsync() As Task(Of CacheData)
@@ -113,6 +135,7 @@ Public NotInheritable Class DataCache
 
         Public Shared Sub Clear()
             SyncLock _lock
+                _generation += 1
                 _loaded = False
                 _loading = Nothing
             End SyncLock
@@ -122,5 +145,6 @@ Public NotInheritable Class DataCache
             FlashSales.Clear()
             Coupons.Clear()
             Reels.Clear()
+            StoreSettings = New LocalData.StoreSettings()
         End Sub
     End Class

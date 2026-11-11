@@ -108,4 +108,8 @@ Partial Public Class Overview
     Private Sub BtnOrders_Click(sender As Object, e As RoutedEventArgs)
         CType(Application.Current.MainWindow, MainWindow).NavigateToPage(New Orders())
     End Sub
+
+    Private Sub BtnCreateCoupon_Click(sender As Object, e As RoutedEventArgs)
+        CType(Application.Current.MainWindow, MainWindow).NavigateToPage(New Coupons())
+    End Sub
 End Class

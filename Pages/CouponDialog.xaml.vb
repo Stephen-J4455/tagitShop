@@ -46,11 +46,11 @@ Partial Public Class CouponDialog
             validUntil = vu
         End If
 
-        Code = code
-        Description = description
-        DiscountType = discountType
-        DiscountValue = discountValue
-        ValidUntil = validUntil
+        Me.Code = code.ToUpperInvariant()
+        Me.Description = description
+        Me.DiscountType = discountType
+        Me.DiscountValue = discountValue
+        Me.ValidUntil = validUntil
 
         DialogResult = True
         Close()

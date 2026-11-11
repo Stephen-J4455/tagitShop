@@ -13,6 +13,7 @@ Imports System.Text.RegularExpressions
 Public NotInheritable Class SupabaseService
     Private Const SupabaseUrl As String = "https://meiljgoztnhnyvtfkzuh.supabase.co"
     Private Const SupabaseAnonKey As String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1laWxqZ296dG5obnl2dGZrenVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxMTI0OTksImV4cCI6MjA4MDY4ODQ5OX0.X7zve3MSvaoplAHl45BpC57h9G4IY5suhBBteIoEU3I"
+    Private Const R2PublicDomain As String = "https://cdn.expressmart.com"
     Private Shared ReadOnly Client As New HttpClient() With {.Timeout = TimeSpan.FromSeconds(60)}
     Private Const MaxRetries As Integer = 3
     Private Shared ReadOnly JsonOptions As New JsonSerializerOptions() With {.PropertyNameCaseInsensitive = True}
@@ -54,6 +55,31 @@ Public NotInheritable Class SupabaseService
             End Try
         End If
         AppSession.ClearLiveSession()
+    End Function
+
+    Public Shared Async Function RestoreLiveSessionAsync() As Task(Of Boolean)
+        If AppSession.Mode <> StoreMode.Live OrElse String.IsNullOrWhiteSpace(AppSession.AccessToken) Then Return False
+
+        Try
+            Dim userResponse = Await SendAsync(HttpMethod.Get, "/auth/v1/user", Nothing, True)
+            Using userJson = JsonDocument.Parse(userResponse)
+                Dim userId = GetString(userJson.RootElement, "id")
+                If String.IsNullOrWhiteSpace(userId) Then Return False
+                AppSession.UserId = userId
+            End Using
+
+            Dim sellerPath = "/rest/v1/express_sellers?user_id=eq." & Uri.EscapeDataString(AppSession.UserId) & "&select=id,name&limit=1"
+            Dim sellerResponse = Await SendAsync(HttpMethod.Get, sellerPath, Nothing, True)
+            Dim sellers = JsonSerializer.Deserialize(Of List(Of SellerResponse))(sellerResponse, JsonOptions)
+            If sellers Is Nothing OrElse sellers.Count = 0 Then Return False
+
+            AppSession.SellerId = sellers(0).Id
+            AppSession.StoreName = sellers(0).Name
+            AppSession.SaveSession()
+            Return True
+        Catch
+            Return False
+        End Try
     End Function
 
     Private Shared Async Function RefreshSessionAsync() As Task
@@ -199,6 +225,43 @@ Public NotInheritable Class SupabaseService
         Return uploadedUrls
     End Function
 
+    Public Shared Async Function UploadStorefrontImageAsync(filePath As String, imageLabel As String) As Task(Of String)
+        If String.IsNullOrWhiteSpace(filePath) OrElse Not File.Exists(filePath) Then
+            Throw New FileNotFoundException("Storefront image file was not found.", filePath)
+        End If
+
+        Dim extension = Path.GetExtension(filePath).TrimStart("."c).ToLowerInvariant()
+        Dim contentType = ImageContentType(extension)
+        Dim storeSegment = SafeStorageSegment(AppSession.StoreName, "store") & "-" & If(String.IsNullOrWhiteSpace(AppSession.SellerId), "unknown", AppSession.SellerId)
+        Dim fileName = SafeStorageSegment(imageLabel, "cover") & "-" & Guid.NewGuid().ToString("N") & "." & extension
+        Dim presignPayload = JsonSerializer.Serialize(New With {
+            .fileName = fileName,
+            .fileType = contentType,
+            .folder = "storefront/" & storeSegment
+        })
+        Dim presignResponse = Await SendAsync(HttpMethod.Post, "/functions/v1/get-r2-upload-url", presignPayload, True)
+        Dim uploadUrl As String
+        Dim publicUrl As String
+        Using presignJson = JsonDocument.Parse(presignResponse)
+            uploadUrl = presignJson.RootElement.GetProperty("uploadUrl").GetString()
+            publicUrl = presignJson.RootElement.GetProperty("publicUrl").GetString()
+        End Using
+
+        Dim bytes = Await File.ReadAllBytesAsync(filePath)
+        Using uploadClient As New HttpClient() With {.Timeout = TimeSpan.FromMinutes(2)}
+            Using request As New HttpRequestMessage(HttpMethod.Put, uploadUrl)
+                request.Content = New ByteArrayContent(bytes)
+                request.Content.Headers.ContentType = New MediaTypeHeaderValue(contentType)
+                Using response = Await uploadClient.SendAsync(request)
+                    If Not response.IsSuccessStatusCode Then
+                        Throw New InvalidOperationException("Storefront image upload failed (" & CInt(response.StatusCode).ToString() & ").")
+                    End If
+                End Using
+            End Using
+        End Using
+        Return publicUrl
+    End Function
+
     Public Shared Async Function UploadProductVideoAsync(filePath As String, productTitle As String) As Task(Of ProductMediaUpload)
         Dim extension = Path.GetExtension(filePath).TrimStart("."c).ToLowerInvariant()
         Dim contentType = If(extension = "mov", "video/quicktime", "video/mp4")
@@ -342,10 +405,15 @@ Public NotInheritable Class SupabaseService
 
     Public Shared Async Function LoadStoreSettingsAsync() As Task(Of LocalData.StoreSettings)
         If AppSession.Mode = StoreMode.Demo Then Return LocalData.Load().Store
-        Dim path = "/rest/v1/express_sellers?id=eq." & Uri.EscapeDataString(AppSession.SellerId) & "&select=name,email,description,store_description,theme_color,storefront_theme,storefront_layout,storefront_enabled,avatar,cover_image,cover_image_2,social_website,social_facebook,social_instagram,social_twitter,social_whatsapp&limit=1"
+        If String.IsNullOrWhiteSpace(AppSession.UserId) Then
+            Throw New InvalidOperationException("The live account identity is missing. Sign in again to load your store profile.")
+        End If
+        Dim path = "/rest/v1/express_sellers?user_id=eq." & Uri.EscapeDataString(AppSession.UserId) & "&select=id,name,email,description,store_description,theme_color,storefront_theme,storefront_layout,storefront_enabled,avatar,cover_image,cover_image_2,social_website,social_facebook,social_instagram,social_twitter,social_whatsapp&limit=1"
         Dim response = Await SendAsync(HttpMethod.Get, path, Nothing, True)
         Dim settings = JsonSerializer.Deserialize(Of List(Of RemoteStoreSettings))(response, JsonOptions)
         If settings Is Nothing OrElse settings.Count = 0 Then Throw New InvalidOperationException("The store profile could not be loaded.")
+        If Not String.IsNullOrWhiteSpace(settings(0).id) Then AppSession.SellerId = settings(0).id
+        AppSession.StoreName = settings(0).name
         Return New LocalData.StoreSettings() With {
             .name = settings(0).name,
             .email = settings(0).email,
@@ -751,7 +819,8 @@ Public NotInheritable Class SupabaseService
                 .id = c.id, .code = c.code, .description = c.description,
                 .discount = CInt(c.discount_value), .discount_type = c.discount_type,
                 .status = If(c.is_active, "Active", "Expired"), .uses = c.usage_count,
-                .valid_from = c.created_at.ToString("O"), .valid_until = If(c.valid_until.HasValue, c.valid_until.Value.ToString("O"), String.Empty)
+                .valid_from = c.created_at.ToString("O"), .valid_until = If(c.valid_until.HasValue, c.valid_until.Value.ToString("O"), String.Empty),
+                .created_at = c.created_at.ToString("O")
             }).ToList()
         End If
 
@@ -772,7 +841,8 @@ Public NotInheritable Class SupabaseService
                 .status = status,
                 .uses = remote.usage_count,
                 .valid_from = remote.valid_from,
-                .valid_until = remote.valid_until
+                .valid_until = remote.valid_until,
+                .created_at = remote.created_at
             })
         Next
         Return coupons
@@ -808,10 +878,31 @@ Public NotInheritable Class SupabaseService
         Await SendAsync(HttpMethod.Post, "/rest/v1/express_coupons", payload, True, "return=representation")
     End Function
 
+    Public Shared Async Function DeleteCouponAsync(couponId As String) As Task
+        If String.IsNullOrWhiteSpace(couponId) Then Throw New InvalidOperationException("Choose a coupon to delete.")
+
+        If AppSession.Mode = StoreMode.Demo Then
+            Dim data = LocalData.Load()
+            Dim removed = data.Coupons.RemoveAll(Function(coupon) coupon IsNot Nothing AndAlso coupon.id = couponId)
+            If removed = 0 Then Throw New InvalidOperationException("The coupon no longer exists.")
+            LocalData.Save()
+            Return
+        End If
+
+        If String.IsNullOrWhiteSpace(AppSession.SellerId) Then
+            Throw New InvalidOperationException("Your store session has expired. Sign in again to delete this coupon.")
+        End If
+
+        Dim path = "/rest/v1/express_coupons?id=eq." & Uri.EscapeDataString(couponId) &
+            "&seller_id=eq." & Uri.EscapeDataString(AppSession.SellerId) & "&select=id"
+        Dim deletedRows = Await SendAsync(HttpMethod.Delete, path, Nothing, True, "return=representation")
+        EnsureReturnedRow(deletedRows, "Coupon deletion")
+    End Function
+
     Public Shared Async Function LoadReelsAsync() As Task(Of List(Of ReelItem))
         If AppSession.Mode = StoreMode.Demo Then
             Return LocalData.Load().Reels.Select(Function(r) New ReelItem() With {
-                .id = r.id, .title = r.title, .video_url = r.video_url,
+                .id = r.id, .title = r.title, .video_url = ResolveVideoUrl(r.video_url, Nothing),
                 .thumbnail_url = r.thumbnail_url, .views = r.views,
                 .likes = r.likes, .created_at = r.created_at.ToString("O")
             }).ToList()
@@ -826,7 +917,7 @@ Public NotInheritable Class SupabaseService
             reels.Add(New ReelItem() With {
                 .id = remote.id,
                 .title = remote.title,
-                .video_url = remote.video_url,
+                .video_url = ResolveVideoUrl(remote.video_url, remote.r2_key),
                 .thumbnail_url = remote.thumbnail_url,
                 .views = remote.views,
                 .likes = remote.likes,
@@ -834,6 +925,91 @@ Public NotInheritable Class SupabaseService
             })
         Next
         Return reels
+    End Function
+
+    Public Shared Async Function DeleteReelAsync(reelId As String, r2Key As String) As Task
+        If String.IsNullOrWhiteSpace(reelId) Then Throw New InvalidOperationException("Choose a reel to delete.")
+
+        If AppSession.Mode = StoreMode.Demo Then
+            Dim data = LocalData.Load()
+            Dim removed = data.Reels.RemoveAll(Function(reel) reel IsNot Nothing AndAlso reel.id = reelId)
+            If removed = 0 Then Throw New InvalidOperationException("The reel no longer exists.")
+            LocalData.Save()
+            Return
+        End If
+
+        If String.IsNullOrWhiteSpace(AppSession.SellerId) Then
+            Throw New InvalidOperationException("Your store session has expired. Sign in again to delete this reel.")
+        End If
+
+        Dim path = "/rest/v1/reels?id=eq." & Uri.EscapeDataString(reelId) &
+            "&seller_id=eq." & Uri.EscapeDataString(AppSession.SellerId) & "&select=id"
+        Dim deletedRows = Await SendAsync(HttpMethod.Delete, path, Nothing, True, "return=representation")
+        EnsureReturnedRow(deletedRows, "Reel deletion")
+        Await DeleteR2ObjectBestEffortAsync(r2Key)
+    End Function
+
+    Public Shared Async Function DeleteProductVideoAsync(productId As String, videoUrl As String, r2Key As String) As Task
+        If String.IsNullOrWhiteSpace(productId) Then Throw New InvalidOperationException("Choose a product video to delete.")
+
+        If AppSession.Mode = StoreMode.Demo Then
+            Dim data = LocalData.Load()
+            Dim product = data.Products.FirstOrDefault(Function(item) item IsNot Nothing AndAlso item.id = productId)
+            If product Is Nothing Then Throw New InvalidOperationException("The product no longer exists.")
+            product.video_url = Nothing
+            product.r2_video_key = Nothing
+            LocalData.Save()
+            Return
+        End If
+
+        If String.IsNullOrWhiteSpace(AppSession.SellerId) Then
+            Throw New InvalidOperationException("Your store session has expired. Sign in again to delete this video.")
+        End If
+
+        Dim path = "/rest/v1/express_products?id=eq." & Uri.EscapeDataString(productId) &
+            "&seller_id=eq." & Uri.EscapeDataString(AppSession.SellerId) & "&select=id"
+        Dim payload = JsonSerializer.Serialize(New With {
+            .video_url = Nothing,
+            .r2_video_key = Nothing
+        })
+        Dim updatedRows = Await SendAsync(New HttpMethod("PATCH"), path, payload, True, "return=representation")
+        EnsureReturnedRow(updatedRows, "Product video deletion")
+        Await DeleteR2ObjectBestEffortAsync(If(String.IsNullOrWhiteSpace(r2Key), GetR2KeyFromUrl(videoUrl), r2Key))
+    End Function
+
+    Private Shared Async Function DeleteR2ObjectBestEffortAsync(r2Key As String) As Task
+        If String.IsNullOrWhiteSpace(r2Key) Then Return
+        Try
+            Dim payload = JsonSerializer.Serialize(New With {.key = r2Key.Trim().TrimStart("/"c)})
+            Await SendAsync(HttpMethod.Post, "/functions/v1/delete-r2-object", payload, True)
+        Catch
+            ' The database record is the source of truth; an unavailable object
+            ' cleanup endpoint must not prevent removing the reel from the store.
+        End Try
+    End Function
+
+    Private Shared Function GetR2KeyFromUrl(videoUrl As String) As String
+        Dim value = If(videoUrl, String.Empty).Trim()
+        If String.IsNullOrWhiteSpace(value) Then Return String.Empty
+        Dim prefix = R2PublicDomain.TrimEnd("/"c) & "/"
+        If value.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) Then
+            Return Uri.UnescapeDataString(value.Substring(prefix.Length))
+        End If
+        Return String.Empty
+    End Function
+
+    Public Shared Function ResolveVideoUrl(videoUrl As String, r2Key As String) As String
+        Dim rawValue = If(videoUrl, String.Empty).Trim()
+        If String.IsNullOrWhiteSpace(rawValue) Then rawValue = If(r2Key, String.Empty).Trim()
+        If String.IsNullOrWhiteSpace(rawValue) Then Return String.Empty
+
+        If rawValue.StartsWith("http://", StringComparison.OrdinalIgnoreCase) OrElse
+           rawValue.StartsWith("https://", StringComparison.OrdinalIgnoreCase) OrElse
+           rawValue.StartsWith("file://", StringComparison.OrdinalIgnoreCase) Then
+            Return rawValue
+        End If
+
+        Return R2PublicDomain.TrimEnd("/"c) & "/" & rawValue.TrimStart("/"c)
     End Function
 
     Public Shared Async Function UpdateProductQuantityAsync(productId As String, quantity As Integer) As Task
@@ -1053,11 +1229,15 @@ Public NotInheritable Class SupabaseService
 
     Public Class ReelItem
         Public Property id As String
+        Public Property source_id As String
+        Public Property source_type As String
         Public Property title As String
         Public Property video_url As String
+        Public Property r2_key As String
         Public Property thumbnail_url As String
         Public Property views As Integer
         Public Property likes As Integer
+        Public Property time As String
         Public Property created_at As String
     End Class
 
@@ -1143,6 +1323,7 @@ Public NotInheritable Class SupabaseService
     End Class
 
     Private Class RemoteStoreSettings
+        Public Property id As String
         Public Property name As String
         Public Property email As String
         Public Property description As String
@@ -1186,12 +1367,14 @@ Public NotInheritable Class SupabaseService
         Public Property valid_from As String
         Public Property valid_until As String
         Public Property is_active As Boolean?
+        Public Property created_at As String
     End Class
 
     Private Class RemoteReel
         Public Property id As String
         Public Property title As String
         Public Property video_url As String
+        Public Property r2_key As String
         Public Property thumbnail_url As String
         Public Property views As Integer?
         Public Property likes As Integer?

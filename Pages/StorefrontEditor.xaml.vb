@@ -1,5 +1,6 @@
 Imports System
 Imports System.Collections.Generic
+Imports System.IO
 Imports System.Linq
 Imports System.Text.RegularExpressions
 Imports System.Windows
@@ -28,9 +29,14 @@ Partial Public Class StorefrontEditor
         RemoveHandler Loaded, AddressOf Page_Loaded
         isInitializing = True
         Try
-            Await DataCache.EnsureLoadedAsync()
+            Dim settings As LocalData.StoreSettings
+            If AppSession.Mode = StoreMode.Live Then
+                settings = Await DataCache.RefreshStoreSettingsAsync()
+            Else
+                Await DataCache.EnsureLoadedAsync()
+                settings = DataCache.StoreSettings
+            End If
             previewReady = True
-            Dim settings = DataCache.StoreSettings
             TxtStoreName.Text = If(settings.name, String.Empty)
             TxtStoreEmail.Text = If(settings.email, String.Empty)
             TxtDescription.Text = If(settings.description, String.Empty)
@@ -241,8 +247,46 @@ Partial Public Class StorefrontEditor
 
         PreviewHeroHost.Content = CreateHero(theme, layout, storeName, description, accentColor)
         PreviewBelowHeroHost.Content = CreateStoreSections(theme, layout, storeName, accentColor)
+        PreviewSocialLinksHost.Content = CreateSocialLinks(theme, foreground, accentColor)
         SetPreviewImage(PreviewAvatarImage, TxtAvatar.Text.Trim(), PreviewAvatarFallback)
     End Sub
+
+    Private Function CreateSocialLinks(theme As String, foreground As Brush, accent As Color) As UIElement
+        Dim links As New List(Of Tuple(Of String, String)) From {
+            Tuple.Create("Facebook", NormalizeSocialLink(TxtSocialFacebook.Text, False)),
+            Tuple.Create("Instagram", NormalizeSocialLink(TxtSocialInstagram.Text, False)),
+            Tuple.Create("X", NormalizeSocialLink(TxtSocialTwitter.Text, False)),
+            Tuple.Create("WhatsApp", NormalizeSocialLink(TxtSocialWhatsapp.Text, True)),
+            Tuple.Create("Website", NormalizeSocialLink(TxtSocialWebsite.Text, False))
+        }
+        Dim visibleLinks = links.Where(Function(item) Not String.IsNullOrWhiteSpace(item.Item2)).ToList()
+        If visibleLinks.Count = 0 Then Return New Border() With {.Visibility = Visibility.Collapsed}
+
+        Dim panel As New WrapPanel() With {.HorizontalAlignment = HorizontalAlignment.Left}
+        For Each link In visibleLinks
+            Dim label = CreateText(link.Item1, New SolidColorBrush(accent), 7, FontWeights.SemiBold, New Thickness(0, 0, 16, 5))
+            label.ToolTip = link.Item2
+            panel.Children.Add(label)
+        Next
+        Dim foregroundColor = If(TryCast(foreground, SolidColorBrush), New SolidColorBrush(Colors.Black)).Color
+        Return New Border() With {
+            .BorderBrush = New SolidColorBrush(Color.FromArgb(&H35, foregroundColor.R, foregroundColor.G, foregroundColor.B)),
+            .BorderThickness = New Thickness(0, 1, 0, 0),
+            .Padding = New Thickness(0, 10, 0, 0),
+            .Child = panel
+        }
+    End Function
+
+    Private Shared Function NormalizeSocialLink(value As String, isWhatsapp As Boolean) As String
+        Dim trimmed = If(value, String.Empty).Trim()
+        If String.IsNullOrWhiteSpace(trimmed) Then Return String.Empty
+        If isWhatsapp AndAlso Regex.IsMatch(trimmed, "^[0-9+()\-\s]{6,}$") Then
+            Dim digits = New String(trimmed.Where(Function(character) Char.IsDigit(character)).ToArray())
+            If Not String.IsNullOrWhiteSpace(digits) Then Return "https://wa.me/" & digits
+        End If
+        If Regex.IsMatch(trimmed, "^[a-z][a-z0-9+\-.]*://", RegexOptions.IgnoreCase) Then Return trimmed
+        Return "https://" & trimmed
+    End Function
 
     Private Function GetThemeBackground(theme As String) As SolidColorBrush
         Select Case theme.ToLowerInvariant()
@@ -607,8 +651,8 @@ Partial Public Class StorefrontEditor
             New Point(1, 1))
 
         If String.IsNullOrWhiteSpace(path) Then Return surface
-        Dim imageUri As Uri = Nothing
-        If Not Uri.TryCreate(path, UriKind.Absolute, imageUri) Then
+        Dim imageUri = ResolveImageUri(path)
+        If imageUri Is Nothing Then
             TxtFeedback.Text = "Couldn't preview an image: enter a valid image URL or file path."
             Return surface
         End If
@@ -724,8 +768,8 @@ Partial Public Class StorefrontEditor
         If String.IsNullOrWhiteSpace(path) Then Return
 
         Try
-            Dim imageUri As Uri = Nothing
-            If Not Uri.TryCreate(path, UriKind.Absolute, imageUri) Then
+            Dim imageUri = ResolveImageUri(path)
+            If imageUri Is Nothing Then
                 Throw New InvalidOperationException("Enter a valid image URL or file path.")
             End If
 
@@ -741,6 +785,20 @@ Partial Public Class StorefrontEditor
             TxtFeedback.Text = "Couldn't preview an image: " & ex.Message
         End Try
     End Sub
+
+    Private Shared Function ResolveImageUri(path As String) As Uri
+        Dim trimmed = If(path, String.Empty).Trim()
+        If String.IsNullOrWhiteSpace(trimmed) Then Return Nothing
+
+        If File.Exists(trimmed) Then Return New Uri(System.IO.Path.GetFullPath(trimmed), UriKind.Absolute)
+
+        Dim imageUri As Uri = Nothing
+        If Uri.TryCreate(trimmed, UriKind.Absolute, imageUri) AndAlso
+           (imageUri.Scheme = Uri.UriSchemeHttp OrElse imageUri.Scheme = Uri.UriSchemeHttps OrElse imageUri.Scheme = Uri.UriSchemeFile) Then
+            Return imageUri
+        End If
+        Return Nothing
+    End Function
 
     Private Sub PreviewImage_Failed(sender As Object, e As ExceptionRoutedEventArgs)
         Dim image = TryCast(sender, Image)
@@ -840,6 +898,9 @@ Partial Public Class StorefrontEditor
         Try
             Dim theme = If(TryCast(CmbTheme.SelectedValue, String), "chicwave")
             Dim layout = If(TryCast(CmbLayout.SelectedValue, String), "classic")
+            Dim avatar = Await PrepareStorefrontImageAsync(TxtAvatar.Text.Trim(), "avatar")
+            Dim coverImage = Await PrepareStorefrontImageAsync(TxtCoverImage.Text.Trim(), "cover")
+            Dim coverImage2 = Await PrepareStorefrontImageAsync(TxtCoverImage2.Text.Trim(), "cover-2")
             Dim settings = New LocalData.StoreSettings() With {
                 .name = storeName,
                 .email = email,
@@ -849,14 +910,14 @@ Partial Public Class StorefrontEditor
                 .storefront_theme = theme,
                 .storefront_layout = layout,
                 .storefront_enabled = ChkStorefrontEnabled.IsChecked.GetValueOrDefault(False),
-                .avatar = If(String.IsNullOrWhiteSpace(TxtAvatar.Text.Trim()), Nothing, TxtAvatar.Text.Trim()),
-                .cover_image = If(String.IsNullOrWhiteSpace(TxtCoverImage.Text.Trim()), Nothing, TxtCoverImage.Text.Trim()),
-                .cover_image_2 = If(String.IsNullOrWhiteSpace(TxtCoverImage2.Text.Trim()), Nothing, TxtCoverImage2.Text.Trim()),
-                .social_website = If(String.IsNullOrWhiteSpace(TxtSocialWebsite.Text.Trim()), Nothing, TxtSocialWebsite.Text.Trim()),
-                .social_facebook = If(String.IsNullOrWhiteSpace(TxtSocialFacebook.Text.Trim()), Nothing, TxtSocialFacebook.Text.Trim()),
-                .social_instagram = If(String.IsNullOrWhiteSpace(TxtSocialInstagram.Text.Trim()), Nothing, TxtSocialInstagram.Text.Trim()),
-                .social_twitter = If(String.IsNullOrWhiteSpace(TxtSocialTwitter.Text.Trim()), Nothing, TxtSocialTwitter.Text.Trim()),
-                .social_whatsapp = If(String.IsNullOrWhiteSpace(TxtSocialWhatsapp.Text.Trim()), Nothing, TxtSocialWhatsapp.Text.Trim())
+                .avatar = avatar,
+                .cover_image = coverImage,
+                .cover_image_2 = coverImage2,
+                .social_website = If(String.IsNullOrWhiteSpace(TxtSocialWebsite.Text.Trim()), Nothing, NormalizeSocialLink(TxtSocialWebsite.Text, False)),
+                .social_facebook = If(String.IsNullOrWhiteSpace(TxtSocialFacebook.Text.Trim()), Nothing, NormalizeSocialLink(TxtSocialFacebook.Text, False)),
+                .social_instagram = If(String.IsNullOrWhiteSpace(TxtSocialInstagram.Text.Trim()), Nothing, NormalizeSocialLink(TxtSocialInstagram.Text, False)),
+                .social_twitter = If(String.IsNullOrWhiteSpace(TxtSocialTwitter.Text.Trim()), Nothing, NormalizeSocialLink(TxtSocialTwitter.Text, False)),
+                .social_whatsapp = If(String.IsNullOrWhiteSpace(TxtSocialWhatsapp.Text.Trim()), Nothing, NormalizeSocialLink(TxtSocialWhatsapp.Text, True))
             }
 
             Await SupabaseService.SaveStoreSettingsAsync(settings)
@@ -871,4 +932,17 @@ Partial Public Class StorefrontEditor
             BtnSaveTheme.Content = "Save"
         End Try
     End Sub
+
+    Private Async Function PrepareStorefrontImageAsync(value As String, label As String) As Task(Of String)
+        If String.IsNullOrWhiteSpace(value) Then Return Nothing
+        If AppSession.Mode <> StoreMode.Live Then Return value
+        If File.Exists(value) Then Return Await SupabaseService.UploadStorefrontImageAsync(value, label)
+
+        Dim imageUri As Uri = Nothing
+        If Uri.TryCreate(value, UriKind.Absolute, imageUri) AndAlso
+           (imageUri.Scheme = Uri.UriSchemeHttp OrElse imageUri.Scheme = Uri.UriSchemeHttps) Then
+            Return value
+        End If
+        Throw New InvalidOperationException("The " & label & " image must be a public URL or an existing local image file.")
+    End Function
 End Class

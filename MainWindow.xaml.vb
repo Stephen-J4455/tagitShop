@@ -16,7 +16,14 @@ Class MainWindow
         ThemeManager.Initialize()
         UpdateThemeToggle()
         If AppSession.TryRestoreSession() Then
-            EnterDashboard()
+            If Await SupabaseService.RestoreLiveSessionAsync() Then
+                Await EnterDashboard()
+            Else
+                AppSession.ClearLiveSession()
+                LoginPanel.Visibility = Visibility.Visible
+                DashboardPanel.Visibility = Visibility.Collapsed
+                TxtLoginFeedback.Text = "Your live session has expired. Sign in again to continue."
+            End If
         Else
             LoginPanel.Visibility = Visibility.Visible
             DashboardPanel.Visibility = Visibility.Collapsed
@@ -73,15 +80,16 @@ Class MainWindow
         BtnLogin.Content = "Connecting..."
         TxtLoginFeedback.Text = String.Empty
         Try
+            DataCache.Clear()
             If String.Equals(email, DemoEmail, StringComparison.OrdinalIgnoreCase) AndAlso
                String.Equals(password, DemoPassword, StringComparison.Ordinal) Then
                 AppSession.StartDemo()
-                EnterDashboard()
+                Await EnterDashboard()
                 Return
             End If
 
             Await SupabaseService.SignInAsync(email, password)
-            EnterDashboard()
+            Await EnterDashboard()
         Catch ex As Exception
             AppSession.ClearLiveSession()
             TxtLoginFeedback.Text = ex.Message
@@ -215,6 +223,7 @@ Class MainWindow
     Private Async Sub BtnLogOut_Click(sender As Object, e As RoutedEventArgs)
         If AppSession.Mode = StoreMode.Live Then Await SupabaseService.SignOutAsync()
         AppSession.ClearLiveSession()
+        DataCache.Clear()
         MainFrame.Content = Nothing
         DashboardPanel.Visibility = Visibility.Collapsed
         LoginPanel.Visibility = Visibility.Visible
@@ -231,15 +240,15 @@ Class MainWindow
         BtnTogglePassword.ToolTip = "Show password"
     End Sub
 
-    Private Sub EnterDashboard()
+    Private Async Function EnterDashboard() As Task
         LoginPanel.Visibility = Visibility.Collapsed
         DashboardPanel.Visibility = Visibility.Visible
         BtnTagAI.Visibility = Visibility.Visible
         TxtSidebarStoreName.Text = AppSession.StoreName
         TxtModeBadge.Text = If(AppSession.Mode = StoreMode.Live, "LIVE / CONNECTED", "DEMO / LOCAL")
-        DataCache.EnsureLoadedAsync()
+        Await DataCache.EnsureLoadedAsync()
         NavigateToPage(New Overview(), BtnOverview)
-    End Sub
+    End Function
 
     Private Sub BtnOverview_Click(sender As Object, e As RoutedEventArgs)
         NavigateToPage(New Overview(), BtnOverview)

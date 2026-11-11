@@ -125,7 +125,7 @@ Partial Public Class Flash
             Return
         End If
         _contentLoaded = true
-        Dim resourceLocater As System.Uri = New System.Uri("/tagitShop;component/pages/flash.xaml", System.UriKind.Relative)
+        Dim resourceLocater As System.Uri = New System.Uri("/tagitShop;V1.0.0.0;component/pages/flash.xaml", System.UriKind.Relative)
         
         #ExternalSource("..\..\..\..\Pages\Flash.xaml",1)
         System.Windows.Application.LoadComponent(Me, resourceLocater)

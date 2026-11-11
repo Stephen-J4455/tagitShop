@@ -104,7 +104,7 @@ Partial Public Class Reviews
             Return
         End If
         _contentLoaded = true
-        Dim resourceLocater As System.Uri = New System.Uri("/tagitShop;component/pages/reviews.xaml", System.UriKind.Relative)
+        Dim resourceLocater As System.Uri = New System.Uri("/tagitShop;V1.0.0.0;component/pages/reviews.xaml", System.UriKind.Relative)
         
         #ExternalSource("..\..\..\..\Pages\Reviews.xaml",1)
         System.Windows.Application.LoadComponent(Me, resourceLocater)

@@ -31,7 +31,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="{DynamicResource CardSurface}" CornerRadius="12" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" Width="260" Margin="0,0,16,16" Padding="16">
+                        <Border Background="{DynamicResource CardSurface}" CornerRadius="12" BorderBrush="{DynamicResource TagitBorder}" BorderThickness="1" Width="280" Margin="0,0,16,16" Padding="16">
                             <StackPanel>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -48,6 +48,7 @@
                                 <TextBlock FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,4,0,0">
                                     <Run Text="{Binding uses}"/><Run Text=" uses"/>
                                 </TextBlock>
+                                <Button Content="Delete coupon" Tag="{Binding}" Style="{StaticResource OutlineButton}" Foreground="{StaticResource ErrorColor}" HorizontalAlignment="Left" Margin="0,14,0,0" Padding="9,5" Click="BtnDeleteCoupon_Click"/>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
